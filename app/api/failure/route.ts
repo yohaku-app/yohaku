@@ -24,16 +24,23 @@ export async function POST(req: Request) {
 本来のタイミング: ${body.timing}
 次の判断: ${body.next}
 
+【ルール】
+- 事実ベースで書く
+- 1行で簡潔に
+- 曖昧な表現は禁止
+- 各項目は混ぜない
+- 名前は短く具体的にする
+
 【出力形式】
-必ずJSONだけで返してください。
-説明文、前置き、補足は一切不要です。
-次の形式に厳密に従ってください。
+必ずJSONのみで返してください
 
 {
-  "title": "失敗の短いタイトル",
-  "category": "失敗カテゴリ",
-  "phase": "工程フェイズ",
-  "summary": "Notionに貼れる要約"
+  "name": "失敗名",
+  "happened": "起きたこと",
+  "missed": "未確認だったこと",
+  "timing": "本来いつ決めるべきだったか",
+  "next": "次からの判断",
+  "text": "全体をまとめた文章"
 }
 `;
 
@@ -43,8 +50,21 @@ export async function POST(req: Request) {
         });
 
         const text = res.output_text;
+
+        // 👇追加①（AIの中身確認）
+        console.log("AI raw:", text);
+
         const cleaned = text.replace(/```json|```/g, "").trim();
-        const aiResult = JSON.parse(cleaned);
+
+        // 👇追加②（安全にする）
+        let aiResult;
+
+        try {
+            aiResult = JSON.parse(cleaned);
+        } catch (e) {
+            console.error("JSON parse error:", cleaned);
+            throw new Error("AIの返却がJSONじゃない");
+        }
 
         await notion.pages.create({
             parent: {
@@ -55,11 +75,12 @@ export async function POST(req: Request) {
                     title: [
                         {
                             text: {
-                                content: aiResult.title || "無題",
+                                content: aiResult.name || "無題",
                             },
                         },
                     ],
                 },
+
                 工程: {
                     rich_text: [
                         {
@@ -69,79 +90,59 @@ export async function POST(req: Request) {
                         },
                     ],
                 },
+
                 起きたこと: {
                     rich_text: [
                         {
                             text: {
-                                content: body.happened || "",
+                                content: aiResult.happened || body.happened || "",
                             },
                         },
                     ],
                 },
+
                 未確認だったこと: {
                     rich_text: [
                         {
                             text: {
-                                content: body.missed || "",
+                                content: aiResult.missed || body.missed || "",
                             },
                         },
                     ],
                 },
+
                 本来いつ決めるべきだったか: {
                     rich_text: [
                         {
                             text: {
-                                content: body.timing || "",
+                                content: aiResult.timing || body.timing || "",
                             },
                         },
                     ],
                 },
+
                 次からの判断: {
                     rich_text: [
                         {
                             text: {
-                                content: body.next || "",
+                                content: aiResult.next || body.next || "",
                             },
                         },
                     ],
                 },
-                AIタイトル: {
+
+                テキスト: {
                     rich_text: [
                         {
                             text: {
-                                content: aiResult.title || "",
+                                content: aiResult.text || "",
                             },
                         },
                     ],
                 },
-                AIカテゴリ: {
-                    rich_text: [
-                        {
-                            text: {
-                                content: aiResult.category || "",
-                            },
-                        },
-                    ],
-                },
-                AIフェーズ: {
-                    rich_text: [
-                        {
-                            text: {
-                                content: aiResult.phase || "",
-                            },
-                        },
-                    ],
-                },
-                AI要約: {
-                    rich_text: [
-                        {
-                            text: {
-                                content: aiResult.summary || "",
-                            },
-                        },
-                    ],
-                },
-            },
+
+                
+            }
         });
 
         return NextResponse.json({
