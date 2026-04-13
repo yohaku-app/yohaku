@@ -12,6 +12,7 @@ type Result = {
   decide_today: string[];
   next_missing: string[];
   photo_warnings: string[];
+  detail?: string;
 };
 
 export default function Home() {
@@ -197,9 +198,9 @@ export default function Home() {
   return (
     <main
       style={{
-        maxWidth: 760,
-        margin: "40px auto",
-        padding: 24,
+        maxWidth: "600px",
+        margin: "0 auto",
+        padding: "16px",
         fontFamily: "Arial, sans-serif",
         lineHeight: 1.6,
       }}
@@ -226,7 +227,7 @@ export default function Home() {
               borderRadius: 8,
               border: "1px solid #ccc",
             }}
-            placeholder="例：明日打設。配筋は終わっているが、設備との干渉がありそう。敷鉄板は一部未確認。重機あり。雨予報。"
+            placeholder="例：明日打設、打設準備未完"
           />
         </label>
 
@@ -419,34 +420,36 @@ export default function Home() {
             )}
           </div>
 
-          <h3 style={{ fontSize: 24, fontWeight: "bold", color: "#3b82f6", marginBottom: 8 }}>起きそうなこと</h3>
-          <ul style={{ paddingLeft: 24, lineHeight: 1.8, marginBottom: 24, listStyleType: "disc" }}>{
-            res.likely_issues.map((x, i) => (<li key={i} style={{ marginBottom: 10 }}>{x}</li>))}</ul>
 
-          <h3 style={{ fontSize: 24, fontWeight: "bold", color: "#3b82f6", marginTop: 24 }}>
-            次に漏れやすいこと（先回り）
+          <h3 style={{ fontSize: 24, fontWeight: "bold", color: "#3b82f6", marginBottom: 8 }}>
+            先に押さえること
           </h3>
-
-          <div style={{ marginBottom: 24 }}>
-            {res.next_missing.map((x, i) => (
-              <div
-                key={i}
-                style={{
-                  marginBottom: 12,
-                  padding: 12,
-                  border: "1px solid #ddd",
-                  borderRadius: 8,
-                  background: "#f9fafb",
-                }}
-              >
-                {x}
-              </div>
+          <ul style={{ paddingLeft: 24, lineHeight: 1.8, marginBottom: 24, listStyleType: "disc" }}>
+            {res.decide_today.slice(0, 3).map((x, i) => (
+              <li key={i} style={{ marginBottom: 10 }}>{x}</li>
             ))}
-          </div>
+          </ul>
 
-          <h3 style={{ fontSize: 24, fontWeight: "bold", color: "#3b82f6", marginBottom: 8 }}>今日決めること</h3>
-          <ul style={{ paddingLeft: 24, lineHeight: 1.8, marginBottom: 24, listStyleType: "disc" }}>{
-            res.decide_today.map((x, i) => (<li key={i} style={{ marginBottom: 10 }}>{x}</li>))}</ul>
+
+          <h3 style={{ fontSize: 24, fontWeight: "bold", color: "#ef4444", marginBottom: 8 }}>
+            緊急化しそうなこと 上位3件
+          </h3>
+          <ul style={{ paddingLeft: 24, lineHeight: 1.8, marginBottom: 24, listStyleType: "none" }}>
+            {res.likely_issues.slice(0, 3).map((x, i) => (
+              <li key={i} style={{ marginBottom: 10 }}>
+                {i + 1}位：{x}
+              </li>
+            ))}
+          </ul>
+
+          {res.detail && (
+            <details style={{ marginBottom: 24 }}>
+              <summary style={{ cursor: "pointer", fontWeight: "bold" }}>詳細見る</summary>
+              <p style={{ marginTop: 12, lineHeight: 1.8 }}>{res.detail}</p>
+            </details>
+          )}
+
+
 
           {imageDataUrl && res.photo_warnings.length > 0 && (<><h3 style={{ fontSize: 24, fontWeight: "bold", color: "#3b82f6", marginBottom: 8 }}>写真から見える注意点</h3>
             <ul style={{
