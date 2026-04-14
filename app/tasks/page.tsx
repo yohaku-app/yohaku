@@ -12,6 +12,7 @@ type CompletedItem = {
 export default function TasksPage() {
   const [todoList, setTodoList] = useState<string[]>([]);
   const [completedList, setCompletedList] = useState<CompletedItem[]>([]);
+  const [manualTodo, setManualTodo] = useState("");
 
   useEffect(() => {
     const savedTodoList = localStorage.getItem("todoList");
@@ -36,6 +37,15 @@ export default function TasksPage() {
 
     localStorage.setItem("todoList", JSON.stringify(nextTodoList));
     localStorage.setItem("completedList", JSON.stringify(nextCompletedList));
+  }
+
+
+  function handleManualTodoAdd() {
+    const text = manualTodo.trim();
+    if (!text) return;
+
+    setTodoList((prev) => (prev.includes(text) ? prev : [...prev, text]));
+    setManualTodo("");
   }
 
   return (
@@ -69,6 +79,39 @@ export default function TasksPage() {
         <h2 style={{ fontSize: 24, fontWeight: "bold", marginTop: 0, marginBottom: 16, color: "#3b82f6" }}>
           やることリスト
         </h2>
+
+        <div style={{ display: "flex", gap: 8, marginBottom: 16 }}>
+          <input
+            value={manualTodo}
+            onChange={(e) => setManualTodo(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === "Enter") handleManualTodoAdd();
+            }}
+            placeholder="やることを入力"
+            style={{
+              flex: 1,
+              padding: "10px 12px",
+              borderRadius: 8,
+              border: "1px solid #ccc",
+              fontSize: 14,
+            }}
+          />
+
+          <button
+            onClick={handleManualTodoAdd}
+            style={{
+              padding: "10px 14px",
+              borderRadius: 8,
+              border: "none",
+              background: "#38bdf8",
+              color: "#fff",
+              fontWeight: "bold",
+              cursor: "pointer",
+            }}
+          >
+            追加
+          </button>
+        </div>
 
         {todoList.length === 0 ? (
           <div style={{ color: "#666" }}>まだありません</div>
