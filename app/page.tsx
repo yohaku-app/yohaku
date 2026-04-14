@@ -59,6 +59,17 @@ export default function Home() {
     if (savedCount) setImprovementCount(Number(savedCount));
   }, []);
 
+  useEffect(() => {
+    if (res) {
+      setTimeout(() => {
+        window.scrollTo({
+          top: 260,
+          behavior: "smooth",
+        });
+      }, 300);
+    }
+  }, [res]);
+
   function getWeight(text: string) {
     if (text.includes("致命") || text.includes("停止")) {
       return { hours: 3, money: 50000 };
@@ -286,6 +297,12 @@ export default function Home() {
         >
           {loading ? "予報中..." : "予報する"}
         </button>
+        {loading && (
+          <p style={{ marginTop: 8, color: "#666", fontSize: 14 }}>
+            （10秒ほどお待ちください）
+          </p>
+        )}
+
       </div>
 
 
@@ -383,42 +400,6 @@ export default function Home() {
             </div>
           </div>
 
-          <h3 style={{ fontSize: 24, fontWeight: "bold", color: "#3b82f6", marginBottom: 8 }}>漏れそうな段取り</h3>
-          <div style={{ marginBottom: 24 }}>
-            {res.missing_arrangements.map((x, i) =>
-              doneItems[i] ? null : (
-                <div
-                  key={i}
-                  style={{
-                    border: "1px solid #ddd",
-                    borderRadius: 12,
-                    padding: 16,
-                    marginBottom: 12,
-                    background: "#fff",
-                    boxShadow: "0 2px 6px rgba(0,0,0,0.05)",
-                  }}
-                >
-                  <div style={{ lineHeight: 1.6, marginBottom: 10 }}>
-                    {x}
-                  </div>
-
-                  <button
-                    onClick={() => handleItemDone(x, i)}
-                    style={{
-                      padding: "6px 12px",
-                      borderRadius: 6,
-                      border: "1px solid #ccc",
-                      background: "#f8f8f8",
-                      cursor: "pointer",
-                      fontSize: 13,
-                    }}
-                  >
-                    やることリストに移動
-                  </button>
-                </div>
-              )
-            )}
-          </div>
 
 
           <h3 style={{ fontSize: 24, fontWeight: "bold", color: "#3b82f6", marginBottom: 8 }}>
@@ -426,9 +407,30 @@ export default function Home() {
           </h3>
           <ul style={{ paddingLeft: 24, lineHeight: 1.8, marginBottom: 24, listStyleType: "disc" }}>
             {res.decide_today.slice(0, 3).map((x, i) => (
-              <li key={i} style={{ marginBottom: 10 }}>{x}</li>
+              <li key={i} style={{ marginBottom: 16 }}>
+                <div style={{ marginBottom: 8 }}>{x}</div>
+                <button
+                  onClick={() => {
+                    setTodoList((prev) => (prev.includes(x) ? prev : [...prev, x]));
+                  }}
+                  style={{
+                    padding: "8px 12px",
+                    borderRadius: 8,
+                    border: "1px solid #ccc",
+                    background: "#fff",
+                    cursor: "pointer",
+                    fontSize: 14,
+                  }}
+                >
+                  やることリストに移動
+                </button>
+
+
+              </li>
             ))}
           </ul>
+
+
 
 
           <h3 style={{ fontSize: 24, fontWeight: "bold", color: "#ef4444", marginBottom: 8 }}>
