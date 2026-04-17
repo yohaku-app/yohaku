@@ -7,8 +7,19 @@ type Result = {
   emergency_probability_percent: string;
   overtime_hours_expected: string;
   loss_yen_expected: string;
-  missing_arrangements: string[];
-  likely_issues: string[];
+  missing_arrangements: {
+    title: string;
+    deadline: string;
+    reason: string;
+  }[];
+
+  likely_issues: {
+    rank: number;
+    title: string;
+    loss: string;
+    overtime: string;
+    risk: string;
+  }[];
   decide_today: string[];
   next_missing: string[];
   photo_warnings: string[];
@@ -99,16 +110,7 @@ export default function Home() {
     localStorage.setItem("improvementCount", String(nextCount));
   }
 
-  function handleTaskComplete(item: string) {
-    const nextTodoList = todoList.filter((x) => x !== item);
-    const nextCompletedList = [...completedList, item];
-
-    setTodoList(nextTodoList);
-    setCompletedList(nextCompletedList);
-
-    localStorage.setItem("todoList", JSON.stringify(nextTodoList));
-    localStorage.setItem("completedList", JSON.stringify(nextCompletedList));
-  }
+  
 
   function handleItemDone(item: string, index: number) {
     if (doneItems[index]) return;
@@ -408,14 +410,34 @@ export default function Home() {
           <h3 style={{ fontSize: 24, fontWeight: "bold", color: "#3b82f6", marginBottom: 8 }}>
             先に押さえること
           </h3>
-          <ul style={{ paddingLeft: 24, lineHeight: 1.8, marginBottom: 24, listStyleType: "disc" }}>
-            {res.decide_today.slice(0, 3).map((x, i) => (
-              <li key={i} style={{ marginBottom: 16 }}>
-                <div style={{ marginBottom: 8 }}>{x}</div>
+
+          <div style={{ marginBottom: 24 }}>
+            {res.missing_arrangements.slice(0, 3).map((x, i) => (
+              <div
+                key={i}
+                style={{
+                  border: "1px solid #ddd",
+                  borderRadius: 12,
+                  padding: 16,
+                  marginBottom: 12,
+                  background: "#fff",
+                }}
+              >
+                <div style={{ fontWeight: "bold", marginBottom: 8 }}>
+                  {x.title}
+                </div>
+                <div style={{ marginBottom: 4 }}>
+                  期限：{x.deadline}
+                </div>
+                <div style={{ marginBottom: 10 }}>
+                  理由：{x.reason}
+                </div>
+
                 <button
-                  onClick={() => {
-                    setTodoList((prev) => (prev.includes(x) ? prev : [...prev, x]));
-                  }}
+                  onClick={() => handleItemDone(
+                    `${x.title}｜期限:${x.deadline}｜理由:${x.reason}`,
+                    i
+                  )}
                   style={{
                     padding: "8px 12px",
                     borderRadius: 8,
@@ -427,25 +449,37 @@ export default function Home() {
                 >
                   やることリストに移動
                 </button>
-
-
-              </li>
+              </div>
             ))}
-          </ul>
-
+          </div>
 
 
 
           <h3 style={{ fontSize: 24, fontWeight: "bold", color: "#ef4444", marginBottom: 8 }}>
             緊急化しそうなこと 上位3件
           </h3>
-          <ul style={{ paddingLeft: 24, lineHeight: 1.8, marginBottom: 24, listStyleType: "none" }}>
+
+          <div style={{ marginBottom: 24 }}>
             {res.likely_issues.slice(0, 3).map((x, i) => (
-              <li key={i} style={{ marginBottom: 10 }}>
-                {i + 1}位：{x}
-              </li>
+              <div
+                key={i}
+                style={{
+                  border: "1px solid #ddd",
+                  borderRadius: 12,
+                  padding: 16,
+                  marginBottom: 12,
+                  background: "#fff",
+                }}
+              >
+                <div style={{ fontWeight: "bold", marginBottom: 8 }}>
+                  {x.rank}位　{x.title}
+                </div>
+                <div style={{ marginBottom: 4 }}>損失：{x.loss}</div>
+                <div style={{ marginBottom: 4 }}>余分労働：{x.overtime}</div>
+                <div>緊急化率：{x.risk}</div>
+              </div>
             ))}
-          </ul>
+          </div>
 
           {res.detail && (
             <details style={{ marginBottom: 24 }}>
