@@ -41,12 +41,17 @@ export default function TasksPage() {
 
 
   function handleManualTodoAdd() {
-    const text = manualTodo.trim();
-    if (!text) return;
+  const text = manualTodo.trim();
+  if (!text) return;
 
-    setTodoList((prev) => (prev.includes(text) ? prev : [...prev, text]));
-    setManualTodo("");
-  }
+  setTodoList((prev) => {
+    const next = prev.includes(text) ? prev : [...prev, text];
+    localStorage.setItem("todoList", JSON.stringify(next));
+    return next;
+  });
+
+  setManualTodo("");
+}
 
   return (
     <main style={{ maxWidth: 760, margin: "40px auto", padding: 24, fontFamily: "Arial, sans-serif" }}>
@@ -67,12 +72,7 @@ export default function TasksPage() {
           background: "#fafafa",
         }}
 
-
-
-
       >
-
-
 
 
 
