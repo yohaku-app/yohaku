@@ -197,6 +197,9 @@ export default function Home() {
 
       localStorage.setItem("history", JSON.stringify(history));
 
+      localStorage.setItem("latestResult", JSON.stringify(data));
+      localStorage.setItem("latestInputText", inputText);
+
 
       setRes(data as Result);
     } catch (e: any) {
