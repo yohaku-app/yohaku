@@ -110,7 +110,7 @@ export default function Home() {
     localStorage.setItem("improvementCount", String(nextCount));
   }
 
-  
+
 
   function handleItemDone(item: string, index: number) {
     if (doneItems[index]) return;
@@ -130,9 +130,11 @@ export default function Home() {
       [index]: true,
     });
 
-    const nextTodoList = [...todoList, item];
-    setTodoList(nextTodoList);
-    localStorage.setItem("todoList", JSON.stringify(nextTodoList));
+    setTodoList((prev) => {
+      const next = prev.includes(item) ? prev : [...prev, item];
+      localStorage.setItem("todoList", JSON.stringify(next));
+      return next;
+    });
 
 
 
@@ -438,17 +440,21 @@ export default function Home() {
                     `${x.title}｜期限:${x.deadline}｜理由:${x.reason}`,
                     i
                   )}
+                  disabled={doneItems[i]}
                   style={{
                     padding: "8px 12px",
                     borderRadius: 8,
                     border: "1px solid #ccc",
-                    background: "#fff",
-                    cursor: "pointer",
+                    background: doneItems[i] ? "#e5e7eb" : "#fff",
+                    color: doneItems[i] ? "#888" : "#000",
+                    cursor: doneItems[i] ? "not-allowed" : "pointer",
                     fontSize: 14,
+                    opacity: doneItems[i] ? 0.7 : 1,
                   }}
                 >
-                  やることリストに移動
+                  {doneItems[i] ? "追加済み" : "やることリストに移動"}
                 </button>
+
               </div>
             ))}
           </div>
