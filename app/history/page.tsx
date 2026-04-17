@@ -56,15 +56,22 @@ export default function HistoryPage() {
 
             <div>
               <strong>結果：</strong>
-              <pre
-                style={{
-                  whiteSpace: "pre-wrap",
-                  wordBreak: "break-word",
-                  margin: 0,
-                }}
-              >
-                {JSON.stringify(item.result, null, 2)}
-              </pre>
+              <div style={{ marginTop: 8, lineHeight: 1.8 }}>
+                <div><strong>緊急化率：</strong>{item.result.emergency_probability_percent}%</div>
+                <div><strong>余分労働時間：</strong>{item.result.overtime_hours_expected}時間</div>
+                <div><strong>想定損失：</strong>{item.result.loss_yen_expected}円</div>
+
+                {item.result.missing_arrangements?.length > 0 && (
+                  <div style={{ marginTop: 8 }}>
+                    <strong>先に押さえること：</strong>
+                    <ul style={{ marginTop: 4, paddingLeft: 20 }}>
+                      {item.result.missing_arrangements.slice(0, 2).map((m: string, i: number) => (
+                        <li key={i}>{m}</li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+              </div>
             </div>
           </div>
         ))
