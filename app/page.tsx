@@ -414,49 +414,50 @@ export default function Home() {
           </h3>
 
           <div style={{ marginBottom: 24 }}>
-            {res.missing_arrangements.slice(0, 3).map((x, i) => (
-              <div
-                key={i}
-                style={{
-                  border: "1px solid #ddd",
-                  borderRadius: 12,
-                  padding: 16,
-                  marginBottom: 12,
-                  background: "#fff",
-                }}
-              >
-                <div style={{ fontWeight: "bold", marginBottom: 8 }}>
-                  {x.title}
-                </div>
-                <div style={{ marginBottom: 4 }}>
-                  期限：{x.deadline}
-                </div>
-                <div style={{ marginBottom: 10 }}>
-                  理由：{x.reason}
-                </div>
+            {res.missing_arrangements.slice(0, 3).map((x, i) => {
+              const taskText = `${x.title}｜期限:${x.deadline}｜理由:${x.reason}`;
+              const alreadyAdded = todoList.includes(taskText);
 
-                <button
-                  onClick={() => handleItemDone(
-                    `${x.title}｜期限:${x.deadline}｜理由:${x.reason}`,
-                    i
-                  )}
-                  disabled={doneItems[i]}
+              return (
+                <div
+                  key={i}
                   style={{
-                    padding: "8px 12px",
-                    borderRadius: 8,
-                    border: "1px solid #ccc",
-                    background: doneItems[i] ? "#e5e7eb" : "#fff",
-                    color: doneItems[i] ? "#888" : "#000",
-                    cursor: doneItems[i] ? "not-allowed" : "pointer",
-                    fontSize: 14,
-                    opacity: doneItems[i] ? 0.7 : 1,
+                    border: "1px solid #ddd",
+                    borderRadius: 12,
+                    padding: 16,
+                    marginBottom: 12,
+                    background: "#fff",
                   }}
                 >
-                  {doneItems[i] ? "追加済み" : "やることリストに移動"}
-                </button>
+                  <div style={{ fontWeight: "bold", marginBottom: 8 }}>
+                    {x.title}
+                  </div>
+                  <div style={{ marginBottom: 4 }}>
+                    期限：{x.deadline}
+                  </div>
+                  <div style={{ marginBottom: 10 }}>
+                    理由：{x.reason}
+                  </div>
 
-              </div>
-            ))}
+                  <button
+                    onClick={() => handleItemDone(taskText, i)}
+                    disabled={alreadyAdded}
+                    style={{
+                      padding: "8px 12px",
+                      borderRadius: 8,
+                      border: "1px solid #ccc",
+                      background: alreadyAdded ? "#e5e7eb" : "#fff",
+                      color: alreadyAdded ? "#888" : "#000",
+                      cursor: alreadyAdded ? "not-allowed" : "pointer",
+                      fontSize: 14,
+                      opacity: alreadyAdded ? 0.7 : 1,
+                    }}
+                  >
+                    {alreadyAdded ? "追加済み" : "やることリストに移動"}
+                  </button>
+                </div>
+              );
+            })}
           </div>
 
 
