@@ -40,18 +40,25 @@ export default function TasksPage() {
   }
 
 
+  const deleteTask = (index: number) => {
+    const newList = todoList.filter((_, i) => i !== index);
+    setTodoList(newList);
+    localStorage.setItem("todoList", JSON.stringify(newList));
+  };
+
+
   function handleManualTodoAdd() {
-  const text = manualTodo.trim();
-  if (!text) return;
+    const text = manualTodo.trim();
+    if (!text) return;
 
-  setTodoList((prev) => {
-    const next = prev.includes(text) ? prev : [...prev, text];
-    localStorage.setItem("todoList", JSON.stringify(next));
-    return next;
-  });
+    setTodoList((prev) => {
+      const next = prev.includes(text) ? prev : [...prev, text];
+      localStorage.setItem("todoList", JSON.stringify(next));
+      return next;
+    });
 
-  setManualTodo("");
-}
+    setManualTodo("");
+  }
 
   return (
     <main style={{ maxWidth: 760, margin: "40px auto", padding: 24, fontFamily: "Arial, sans-serif" }}>
@@ -141,6 +148,21 @@ export default function TasksPage() {
                 }}
               >
                 完了
+              </button>
+
+              <button
+                onClick={() => deleteTask(index)}
+                style={{
+                  padding: "8px 14px",
+                  borderRadius: 8,
+                  border: "1px solid #ccc",
+                  background: "#eee",
+                  cursor: "pointer",
+                  fontWeight: "bold",
+                  marginLeft: 8
+                }}
+              >
+                削除
               </button>
             </div>
           ))
