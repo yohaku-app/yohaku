@@ -73,7 +73,7 @@ export default function HistoryPage() {
                 )}
                 {item.result.likely_issues?.length > 0 && (
                   <div style={{ marginTop: 8 }}>
-                    <strong>緊急化しそうなこと：</strong>
+                    <strong>緊急化しそうなこと 上位3件：</strong>
                     <ul style={{ marginTop: 4, paddingLeft: 20 }}>
                       {item.result.likely_issues.slice(0, 3).map((m: string, i: number) => (
                         <li key={i}>{m}</li>
