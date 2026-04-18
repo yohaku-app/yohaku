@@ -64,29 +64,76 @@ export default function HistoryPage() {
                 {item.result.missing_arrangements?.length > 0 && (
                   <div style={{ marginTop: 8 }}>
                     <strong>先に押さえること：</strong>
-                    <ul style={{ marginTop: 4, paddingLeft: 20 }}>
-                      {item.result.missing_arrangements.slice(0, 2).map((m: any, i: number) => (
-                        <li key={i}>
-                          {typeof m === "string"
-                            ? m
-                            : `${m.title}（期限: ${m.deadline} / 理由: ${m.reason}）`}
-                        </li>
+                    <div style={{ marginTop: 8 }}>
+                      {item.result.missing_arrangements.slice(0, 3).map((m: any, i: number) => (
+                        <div
+                          key={i}
+                          style={{
+                            border: "1px solid #ddd",
+                            borderRadius: 8,
+                            padding: 12,
+                            marginBottom: 8,
+                            background: "#fff",
+                          }}
+                        >
+                          <div style={{ fontWeight: "bold", marginBottom: 4 }}>
+                            {typeof m === "string" ? m : m.title}
+                          </div>
+
+                          {typeof m !== "string" && (
+                            <>
+                              <div style={{ fontSize: 13, marginBottom: 2 }}>
+                                期限：{m.deadline}
+                              </div>
+                              <div style={{ fontSize: 13, color: "#666" }}>
+                                理由：{m.reason}
+                              </div>
+                            </>
+                          )}
+                        </div>
                       ))}
-                    </ul>
+                    </div>
                   </div>
                 )}
                 {item.result.likely_issues?.length > 0 && (
-                  <div style={{ marginTop: 8 }}>
+                  <div style={{ marginTop: 12 }}>
                     <strong>緊急化しそうなこと 上位3件：</strong>
-                    <ul style={{ marginTop: 4, paddingLeft: 20 }}>
+                    <div style={{ marginTop: 8 }}>
                       {item.result.likely_issues.slice(0, 3).map((m: any, i: number) => (
-                        <li key={i}>
-                          {typeof m === "string"
-                            ? m
-                            : `${m.rank}位: ${m.title} / 損失: ${m.loss} / 余分労働: ${m.overtime} / 緊急化率: ${m.risk}`}
-                        </li>
+                        <div
+                          key={i}
+                          style={{
+                            border: "1px solid #ddd",
+                            borderRadius: 8,
+                            padding: 12,
+                            marginBottom: 8,
+                            background: "#fff",
+                          }}
+                        >
+                          {typeof m === "string" ? (
+                            m
+                          ) : (
+                            <>
+                              <div style={{ fontWeight: "bold", marginBottom: 4 }}>
+                                {m.rank}位：{m.title}
+                              </div>
+
+                              <div style={{ fontSize: 13 }}>
+                                損失：{m.loss}
+                              </div>
+
+                              <div style={{ fontSize: 13 }}>
+                                余分労働：{m.overtime}
+                              </div>
+
+                              <div style={{ fontSize: 13, color: "red" }}>
+                                緊急化率：{m.risk}
+                              </div>
+                            </>
+                          )}
+                        </div>
                       ))}
-                    </ul>
+                    </div>
                   </div>
                 )}
 
