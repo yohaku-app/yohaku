@@ -65,8 +65,12 @@ export default function HistoryPage() {
                   <div style={{ marginTop: 8 }}>
                     <strong>先に押さえること：</strong>
                     <ul style={{ marginTop: 4, paddingLeft: 20 }}>
-                      {item.result.missing_arrangements.slice(0, 2).map((m: string, i: number) => (
-                        <li key={i}>{m}</li>
+                      {item.result.missing_arrangements.slice(0, 2).map((m: any, i: number) => (
+                        <li key={i}>
+                          {typeof m === "string"
+                            ? m
+                            : `${m.title}（期限: ${m.deadline} / 理由: ${m.reason}）`}
+                        </li>
                       ))}
                     </ul>
                   </div>
@@ -75,8 +79,12 @@ export default function HistoryPage() {
                   <div style={{ marginTop: 8 }}>
                     <strong>緊急化しそうなこと 上位3件：</strong>
                     <ul style={{ marginTop: 4, paddingLeft: 20 }}>
-                      {item.result.likely_issues.slice(0, 3).map((m: string, i: number) => (
-                        <li key={i}>{m}</li>
+                      {item.result.likely_issues.slice(0, 3).map((m: any, i: number) => (
+                        <li key={i}>
+                          {typeof m === "string"
+                            ? m
+                            : `${m.rank}位: ${m.title} / 損失: ${m.loss} / 余分労働: ${m.overtime} / 緊急化率: ${m.risk}`}
+                        </li>
                       ))}
                     </ul>
                   </div>
