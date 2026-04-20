@@ -44,9 +44,12 @@ export default function Home() {
   const [todoList, setTodoList] = useState<string[]>([]);
   const [completedList, setCompletedList] = useState<string[]>([]);
 
+
+
   useEffect(() => {
     const savedInputText = localStorage.getItem("latestInputText");
     const savedResult = localStorage.getItem("latestResult");
+    const savedTodoList = localStorage.getItem("todoList");
 
     if (savedInputText) {
       setInputText(savedInputText);
@@ -54,6 +57,10 @@ export default function Home() {
 
     if (savedResult) {
       setRes(JSON.parse(savedResult));
+    }
+
+    if (savedTodoList) {
+      setTodoList(JSON.parse(savedTodoList));
     }
   }, []);
 
