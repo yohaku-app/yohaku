@@ -1,5 +1,11 @@
 import Link from "next/link";
 
+export const metadata = {
+  title: "YOHAKU",
+  description: "現場の段取り予報",
+  manifest: "/manifest.json",
+};
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -87,7 +93,7 @@ export default function RootLayout({
           >
             失敗記録
           </Link>
-          
+
         </nav>
       </body>
     </html>
