@@ -4,6 +4,10 @@ export const metadata = {
   title: "YOHAKU",
   description: "現場の段取り予報",
   manifest: "/manifest.json",
+  icons: {
+    apple: "/apple-touch-icon.png",
+    icon: "/icon-192.png",
+  },
 };
 
 export default function RootLayout({
