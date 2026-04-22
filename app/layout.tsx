@@ -4,6 +4,13 @@ export const metadata = {
   title: "YOHAKU",
   description: "現場の段取り予報",
   manifest: "/manifest.json",
+
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "default",
+    title: "YOHAKU",
+  },
+
   icons: {
     apple: "/apple-touch-icon.png",
     icon: "/icon-192.png",
@@ -17,6 +24,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ja">
+      <head>
+        <link
+          rel="apple-touch-startup-image"
+          href="/startup.png"
+        />
+      </head>
       <body style={{ margin: 0, fontFamily: "Arial, sans-serif" }}>
         <div style={{ paddingBottom: 90 }}>
           {children}
