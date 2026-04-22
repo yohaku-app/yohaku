@@ -4,8 +4,8 @@
   "description": "現場の段取り予報アプリ",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#ffffff",
-  "theme_color": "#3b82f6",
+  "background_color": "#031b4e",
+  "theme_color": "#031b4e",
   "icons": [
     {
       "src": "/icon-192.png",
