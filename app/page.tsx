@@ -32,6 +32,7 @@ export default function Home() {
   const [imageName, setImageName] = useState<string>("");
 
   const [loading, setLoading] = useState(false);
+  const [showSplash, setShowSplash] = useState(true);
   const [res, setRes] = useState<Result | null>(null);
   const [err, setErr] = useState<string | null>(null);
 
@@ -87,6 +88,54 @@ export default function Home() {
       }, 300);
     }
   }, [res]);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setShowSplash(false);
+    }, 800);
+
+    return () => clearTimeout(timer);
+  }, []);
+
+  if (showSplash) {
+    return (
+      <div
+        style={{
+          minHeight: "100vh",
+          background: "#031b4e",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          justifyContent: "center",
+          color: "#fff",
+        }}
+      >
+        <div
+          style={{
+            fontSize: 120,
+            fontWeight: "bold",
+            color: "#1d8cff",
+            lineHeight: 1,
+            marginBottom: 24,
+          }}
+        >
+          Y
+        </div>
+
+        <div
+          style={{
+            fontSize: 28,
+            fontWeight: "bold",
+            letterSpacing: 2,
+          }}
+        >
+          段取り予報
+        </div>
+      </div>
+    );
+  }
+
+
 
   function getWeight(text: string) {
     if (text.includes("致命") || text.includes("停止")) {
