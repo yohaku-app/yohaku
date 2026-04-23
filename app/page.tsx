@@ -32,7 +32,7 @@ export default function Home() {
   const [imageName, setImageName] = useState<string>("");
 
   const [loading, setLoading] = useState(false);
-  const [showSplash, setShowSplash] = useState(true);
+  const [showSplash, setShowSplash] = useState(false);
   const [res, setRes] = useState<Result | null>(null);
   const [err, setErr] = useState<string | null>(null);
 
@@ -78,6 +78,8 @@ export default function Home() {
     if (savedCount) setImprovementCount(Number(savedCount));
   }, []);
 
+
+
   useEffect(() => {
     if (res) {
       setTimeout(() => {
@@ -90,11 +92,18 @@ export default function Home() {
   }, [res]);
 
   useEffect(() => {
-    const timer = setTimeout(() => {
-      setShowSplash(false);
-    }, 800);
+    const alreadyShown = sessionStorage.getItem("yohakuSplashShown");
 
-    return () => clearTimeout(timer);
+    if (!alreadyShown) {
+      setShowSplash(true);
+
+      const timer = setTimeout(() => {
+        setShowSplash(false);
+        sessionStorage.setItem("yohakuSplashShown", "true");
+      }, 800);
+
+      return () => clearTimeout(timer);
+    }
   }, []);
 
   if (showSplash) {
