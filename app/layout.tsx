@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { Analytics } from "@vercel/analytics/react";
 
 export const metadata = {
   title: "YOHAKU",
@@ -112,6 +113,7 @@ export default function RootLayout({
           </Link>
 
         </nav>
+        <Analytics />
       </body>
     </html>
   );
