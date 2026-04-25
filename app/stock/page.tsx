@@ -9,6 +9,7 @@ export default function StockPage() {
       site: "杉並A現場",
       area: "杉並区",
       distance: "徒歩7分",
+      distanceMinutes: 7,
       material: "コンパネ",
       spec: "3×6",
       keywords: "コンパネ ベニヤ 合板 ラワン",
@@ -20,6 +21,7 @@ export default function StockPage() {
       site: "中野B現場",
       area: "中野区",
       distance: "徒歩10分",
+      distanceMinutes: 10,
       material: "スタイロフォーム30",
       keywords: "スタイロ カネライトフォーム ミラフォーム 断熱材 XPS",
       spec: "30mm",
@@ -31,6 +33,7 @@ export default function StockPage() {
       site: "新宿C現場",
       area: "新宿区",
       distance: "徒歩12分",
+      distanceMinutes: 12,
       material: "軽天材",
       spec: "65",
       quantity: "30本",
@@ -39,11 +42,13 @@ export default function StockPage() {
     },
   ];
 
-  const filteredItems = stockItems.filter((item) =>
-    (item.material + (item.keywords || "") + item.spec)
-      .toLowerCase()
-      .includes(search.toLowerCase())
-  );
+  const filteredItems = stockItems
+    .filter((item) =>
+      (item.material + (item.keywords || "") + item.spec)
+        .toLowerCase()
+        .includes(search.toLowerCase())
+    )
+    .sort((a, b) => a.distanceMinutes - b.distanceMinutes);
 
   return (
     <main style={{ padding: 24, paddingBottom: 100 }}>
