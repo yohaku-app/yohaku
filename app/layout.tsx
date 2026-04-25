@@ -121,7 +121,7 @@ export default function RootLayout({
               fontSize: 14,
             }}
           >
-            現場ストック
+            近くの余り材
           </Link>
 
         </nav>
