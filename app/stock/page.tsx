@@ -4,6 +4,27 @@ import { useState } from "react";
 export default function StockPage() {
   const [search, setSearch] = useState("");
 
+  const [address, setAddress] = useState(
+    typeof window !== "undefined"
+      ? localStorage.getItem("siteAddress") || ""
+      : ""
+  );
+
+  const [material, setMaterial] = useState("");
+  const [spec, setSpec] = useState("");
+  const [quantity, setQuantity] = useState("");
+
+  const handleRegister = () => {
+    localStorage.setItem("siteAddress", address);
+
+    alert(
+      `登録完了\n住所: ${address}\n材料: ${material}\n規格: ${spec}\n個数: ${quantity}`
+    );
+
+    setMaterial("");
+    setSpec("");
+    setQuantity("");
+  };
   const stockItems = [
     {
       site: "杉並A現場",
@@ -22,7 +43,7 @@ export default function StockPage() {
       area: "中野区",
       distance: "徒歩10分",
       distanceMinutes: 10,
-      material: "スタイロフォーム30",
+      material: "スタイロフォーム 30mm",
       keywords: "スタイロ カネライトフォーム ミラフォーム 断熱材 XPS",
       spec: "30mm",
       quantity: "5枚",
@@ -60,7 +81,7 @@ export default function StockPage() {
 
       <input
         type="text"
-        placeholder="例：スタイロ30"
+        placeholder="例：スタイロ"
         value={search}
         onChange={(e) => setSearch(e.target.value)}
         style={{
@@ -71,7 +92,45 @@ export default function StockPage() {
           border: "1px solid #ccc",
           marginBottom: 20,
         }}
+
+
       />
+
+      <div style={{ marginTop: "24px", padding: "16px", border: "1px solid #ddd", borderRadius: "12px" }}>
+        <h2>余り材登録</h2>
+
+        <input
+          placeholder="住所"
+          value={address}
+          onChange={(e) => setAddress(e.target.value)}
+          style={{ width: "100%", marginBottom: "8px" }}
+        />
+
+        <input
+          placeholder="材料名"
+          value={material}
+          onChange={(e) => setMaterial(e.target.value)}
+          style={{ width: "100%", marginBottom: "8px" }}
+        />
+
+        <input
+          placeholder="規格"
+          value={spec}
+          onChange={(e) => setSpec(e.target.value)}
+          style={{ width: "100%", marginBottom: "8px" }}
+        />
+
+        <input
+          placeholder="個数"
+          value={quantity}
+          onChange={(e) => setQuantity(e.target.value)}
+          style={{ width: "100%", marginBottom: "8px" }}
+        />
+
+        <button onClick={handleRegister}>
+          登録する
+        </button>
+      </div>
 
       <div style={{ display: "grid", gap: 16 }}>
         {filteredItems.map((item, index) => (
