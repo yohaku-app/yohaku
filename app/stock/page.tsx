@@ -14,33 +14,35 @@ export default function StockPage() {
   const [spec, setSpec] = useState("");
   const [quantity, setQuantity] = useState("");
   const [deadline, setDeadline] = useState("");
+  const [photo, setPhoto] = useState<File | null>(null)
+  const [photoPreview, setPhotoPreview] = useState("")
+
+
 
   const handleRegister = async () => {
+    const formData = new FormData();
+
+    formData.append("address", address);
+    formData.append("material", material);
+    formData.append("spec", spec);
+    formData.append("quantity", quantity);
+    formData.append("deadline", deadline);
+
+    if (photo) {
+      formData.append("photo", photo);
+    }
+
     const res = await fetch("/api/add-stock", {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        address,
-        material,
-        spec,
-        quantity,
-        deadline,
-      }),
+      body: formData,
     });
 
     const data = await res.json();
 
     if (data.success) {
-      localStorage.setItem("siteAddress", address);
       alert("登録できました");
-
-      setMaterial("");
-      setSpec("");
-      setQuantity("");
     } else {
-      alert("登録失敗");
+      alert("失敗");
     }
   };
   const stockItems = [
@@ -117,43 +119,133 @@ export default function StockPage() {
       <div style={{ marginTop: "24px", padding: "16px", border: "1px solid #ddd", borderRadius: "12px" }}>
         <h2>ストック材登録</h2>
 
+        <label style={{ fontWeight: "bold" }}>住所</label>
         <input
-          placeholder="住所"
           value={address}
           onChange={(e) => setAddress(e.target.value)}
-          style={{ width: "100%", marginBottom: "8px" }}
+          style={{ width: "100%", marginBottom: "12px", padding: "8px" }}
         />
 
+        <label style={{ fontWeight: "bold" }}>材料名</label>
         <input
-          placeholder="材料名"
           value={material}
           onChange={(e) => setMaterial(e.target.value)}
-          style={{ width: "100%", marginBottom: "8px" }}
+          style={{ width: "100%", marginBottom: "12px", padding: "8px" }}
         />
 
+        <label style={{ fontWeight: "bold" }}>規格</label>
+
+        <select
+          onChange={(e) => setSpec(e.target.value)}
+          style={{
+            width: "100%",
+            marginBottom: "8px",
+            padding: "8px"
+          }}
+        >
+          <option value="">よくある候補を選択</option>
+
+          {(material.includes("スタイロ") ||
+            material.includes("カネライト") ||
+            material.includes("ミラフォーム")) && (
+              <>
+                <option value="30mm 910×1820">30mm 910×1820</option>
+                <option value="40mm 910×1820">40mm 910×1820</option>
+                <option value="50mm 910×1820">50mm 910×1820</option>
+              </>
+            )}
+
+          {material.includes("コンパネ") && (
+            <>
+              <option value="3×6 12mm">3×6 12mm</option>
+              <option value="3×6 15mm">3×6 15mm</option>
+            </>
+          )}
+
+          {(material.includes("スリット")) && (
+            <>
+              <option value="鉛直スリット">鉛直スリット</option>
+              <option value="平行スリット">平行スリット</option>
+            </>
+          )}
+
+          {(material.includes("軽天") ||
+            material.includes("LGS") ||
+            material.includes("下地")) && (
+              <>
+                <option value="65型3m">65型3m</option>
+                <option value="65型4m">65型4m</option>
+              </>
+            )}
+
+          {(material.includes("PB") ||
+            material.includes("石膏ボード") ||
+            material.includes("ボード")) && (
+              <>
+                <option value="9.5mm">9.5mm</option>
+                <option value="12.5mm">12.5mm</option>
+              </>
+            )}
+        </select>
+
         <input
-          placeholder="規格"
+          placeholder="候補にない場合は自由入力"
           value={spec}
           onChange={(e) => setSpec(e.target.value)}
-          style={{ width: "100%", marginBottom: "8px" }}
+          style={{
+            width: "100%",
+            marginBottom: "12px",
+            padding: "8px"
+          }}
         />
 
+        <label style={{ fontWeight: "bold" }}>個数</label>
         <input
-          placeholder="個数"
+          type="number"
           value={quantity}
           onChange={(e) => setQuantity(e.target.value)}
-          style={{ width: "100%", marginBottom: "8px" }}
+          style={{ width: "100%", marginBottom: "12px", padding: "8px" }}
         />
 
-        <label style={{ display: "block", marginBottom: "4px", fontWeight: "bold" }}>
-          引取期限
-        </label>
+        <label style={{ fontWeight: "bold" }}>写真（任意）</label>
 
+        <input
+          type="file"
+          accept="image/*"
+          onChange={(e) => {
+            const file = e.target.files?.[0] || null
+            setPhoto(file)
+
+            if (file) {
+              setPhotoPreview(URL.createObjectURL(file))
+            }
+          }}
+          style={{
+            width: "100%",
+            marginBottom: "12px",
+            padding: "8px"
+          }}
+        />
+
+        {photoPreview && (
+          <img
+            src={photoPreview}
+            alt="preview"
+            style={{
+              width: "100%",
+              maxWidth: "300px",
+              marginBottom: "12px",
+              borderRadius: "8px"
+            }}
+          />
+        )}
+
+        <label style={{ fontWeight: "bold" }}>引取期限</label>
         <input
           type="date"
           value={deadline}
           onChange={(e) => setDeadline(e.target.value)}
-          style={{ width: "100%", marginBottom: "8px" }}
+          style={{ width: "100%", marginBottom: "12px", padding: "8px" }}
         />
 
         <button onClick={handleRegister}>

@@ -2,7 +2,14 @@ import { NextResponse } from "next/server";
 
 export async function POST(req: Request) {
   try {
-    const { address, material, spec, quantity, deadline } = await req.json();
+    const formData = await req.formData();
+
+    const address = String(formData.get("address") || "");
+    const material = String(formData.get("material") || "");
+    const spec = String(formData.get("spec") || "");
+    const quantity = String(formData.get("quantity") || "");
+    const deadline = String(formData.get("deadline") || "");
+    const photo = formData.get("photo") as File | null;
 
     const response = await fetch("https://api.notion.com/v1/pages", {
       method: "POST",
@@ -53,12 +60,12 @@ export async function POST(req: Request) {
           },
           ...(deadline
             ? {
-                "引取期限": {
-                  date: {
-                    start: deadline,
-                  },
+              "引取期限": {
+                date: {
+                  start: deadline,
                 },
-              }
+              },
+            }
             : {}),
         },
       }),
