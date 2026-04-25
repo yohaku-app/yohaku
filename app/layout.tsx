@@ -112,6 +112,18 @@ export default function RootLayout({
             失敗記録
           </Link>
 
+          <Link
+            href="/stock"
+            style={{
+              textDecoration: "none",
+              color: "#111",
+              fontWeight: "bold",
+              fontSize: 14,
+            }}
+          >
+            現場ストック
+          </Link>
+
         </nav>
         <Analytics />
       </body>
