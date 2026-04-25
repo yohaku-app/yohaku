@@ -1,69 +1,96 @@
+"use client";
+import { useState } from "react";
+
 export default function StockPage() {
+  const [search, setSearch] = useState("");
+
   const stockItems = [
     {
       site: "杉並A現場",
+      area: "杉並区",
+      distance: "徒歩7分",
       material: "コンパネ",
       spec: "3×6",
-      quantity: 20,
-      area: "杉並区",
+      quantity: "3枚",
+      pickup: "今日引取可",
       note: "余りあり",
     },
     {
       site: "中野B現場",
-      material: "スタイロフォーム",
-      spec: "30mm",
-      quantity: 12,
       area: "中野区",
-      note: "今週中引取可",
+      distance: "徒歩10分",
+      material: "スタイロフォーム30",
+      spec: "30mm",
+      quantity: "5枚",
+      pickup: "今週中",
+      note: "屋内保管",
     },
     {
       site: "新宿C現場",
+      area: "新宿区",
+      distance: "徒歩12分",
       material: "軽天材",
       spec: "65",
-      quantity: 30,
-      area: "新宿区",
+      quantity: "30本",
+      pickup: "明日引取可",
       note: "一部使用済みあり",
     },
   ];
 
+  const filteredItems = stockItems.filter((item) =>
+    item.material.toLowerCase().includes(search.toLowerCase())
+  );
+
   return (
     <main style={{ padding: 24, paddingBottom: 100 }}>
-      <h1 style={{ fontSize: 36, marginBottom: 12 }}>現場ストック</h1>
+      <h1 style={{ fontSize: 34, marginBottom: 8 }}>近くの余り材 β</h1>
 
-      <p style={{ fontSize: 18, color: "#555", marginBottom: 24 }}>
-        現場ごとの余り材や在庫を確認するための試験版です。
+      <p style={{ fontSize: 17, color: "#555", marginBottom: 20 }}>
+        欲しい材料を検索できます。
       </p>
 
+      <input
+        type="text"
+        placeholder="例：スタイロ30"
+        value={search}
+        onChange={(e) => setSearch(e.target.value)}
+        style={{
+          width: "100%",
+          padding: 14,
+          fontSize: 16,
+          borderRadius: 12,
+          border: "1px solid #ccc",
+          marginBottom: 20,
+        }}
+      />
+
       <div style={{ display: "grid", gap: 16 }}>
-        {stockItems.map((item, index) => (
+        {filteredItems.map((item, index) => (
           <div
             key={index}
             style={{
               border: "1px solid #ddd",
-              borderRadius: 12,
-              padding: 16,
+              borderRadius: 16,
+              padding: 18,
               background: "#fff",
-              boxShadow: "0 2px 8px rgba(0,0,0,0.06)",
             }}
           >
-            <div style={{ fontSize: 22, fontWeight: "bold", marginBottom: 8 }}>
+            <div style={{ color: "#0a7", fontWeight: "bold" }}>
+              {item.area} / {item.distance}
+            </div>
+
+            <div style={{ fontSize: 26, fontWeight: "bold", marginTop: 8 }}>
               {item.material}
             </div>
 
-            <div style={{ fontSize: 16, marginBottom: 4 }}>
-              現場名: {item.site}
+            <div style={{ color: "#555", marginTop: 4 }}>
+              {item.spec}・{item.quantity}
             </div>
-            <div style={{ fontSize: 16, marginBottom: 4 }}>
-              規格: {item.spec}
-            </div>
-            <div style={{ fontSize: 16, marginBottom: 4 }}>
-              数量: {item.quantity}
-            </div>
-            <div style={{ fontSize: 16, marginBottom: 4 }}>
-              エリア: {item.area}
-            </div>
-            <div style={{ fontSize: 16, color: "#666" }}>
-              備考: {item.note}
+
+            <div style={{ marginTop: 10 }}>{item.pickup}</div>
+
+            <div style={{ marginTop: 10, color: "#666" }}>
+              現場：{item.site}
             </div>
           </div>
         ))}
