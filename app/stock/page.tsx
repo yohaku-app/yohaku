@@ -11,6 +11,7 @@ export default function StockPage() {
       distance: "徒歩7分",
       material: "コンパネ",
       spec: "3×6",
+      keywords: "コンパネ ベニヤ 合板 ラワン",
       quantity: "3枚",
       pickup: "今日引取可",
       note: "余りあり",
@@ -20,6 +21,7 @@ export default function StockPage() {
       area: "中野区",
       distance: "徒歩10分",
       material: "スタイロフォーム30",
+      keywords: "スタイロ カネライトフォーム ミラフォーム 断熱材 XPS",
       spec: "30mm",
       quantity: "5枚",
       pickup: "今週中",
@@ -38,7 +40,9 @@ export default function StockPage() {
   ];
 
   const filteredItems = stockItems.filter((item) =>
-    item.material.toLowerCase().includes(search.toLowerCase())
+    (item.material + (item.keywords || "") + item.spec)
+      .toLowerCase()
+      .includes(search.toLowerCase())
   );
 
   return (
