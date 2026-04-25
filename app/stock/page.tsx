@@ -13,17 +13,35 @@ export default function StockPage() {
   const [material, setMaterial] = useState("");
   const [spec, setSpec] = useState("");
   const [quantity, setQuantity] = useState("");
+  const [deadline, setDeadline] = useState("");
 
-  const handleRegister = () => {
-    localStorage.setItem("siteAddress", address);
+  const handleRegister = async () => {
+    const res = await fetch("/api/add-stock", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        address,
+        material,
+        spec,
+        quantity,
+        deadline,
+      }),
+    });
 
-    alert(
-      `登録完了\n住所: ${address}\n材料: ${material}\n規格: ${spec}\n個数: ${quantity}`
-    );
+    const data = await res.json();
 
-    setMaterial("");
-    setSpec("");
-    setQuantity("");
+    if (data.success) {
+      localStorage.setItem("siteAddress", address);
+      alert("登録できました");
+
+      setMaterial("");
+      setSpec("");
+      setQuantity("");
+    } else {
+      alert("登録失敗");
+    }
   };
   const stockItems = [
     {
@@ -124,6 +142,17 @@ export default function StockPage() {
           placeholder="個数"
           value={quantity}
           onChange={(e) => setQuantity(e.target.value)}
+          style={{ width: "100%", marginBottom: "8px" }}
+        />
+
+        <label style={{ display: "block", marginBottom: "4px", fontWeight: "bold" }}>
+          引取期限
+        </label>
+
+        <input
+          type="date"
+          value={deadline}
+          onChange={(e) => setDeadline(e.target.value)}
           style={{ width: "100%", marginBottom: "8px" }}
         />
 
