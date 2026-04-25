@@ -10,6 +10,43 @@ export async function POST(req: Request) {
     const quantity = String(formData.get("quantity") || "");
     const deadline = String(formData.get("deadline") || "");
     const photo = formData.get("photo") as File | null;
+    let uploadedPhotoId = "";
+
+    if (photo && photo.size > 0) {
+      const createUploadRes = await fetch("https://api.notion.com/v1/file_uploads", {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${process.env.NOTION_API_KEY}`,
+          "Content-Type": "application/json",
+          "Notion-Version": "2026-03-11",
+        },
+        body: JSON.stringify({
+          mode: "single_part",
+          filename: photo.name,
+          content_type: photo.type,
+        }),
+      });
+
+      const createUploadData = await createUploadRes.json();
+
+      const uploadForm = new FormData();
+      uploadForm.append("file", photo);
+
+      const sendUploadRes = await fetch(
+        `https://api.notion.com/v1/file_uploads/${createUploadData.id}/send`,
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${process.env.NOTION_API_KEY}`,
+            "Notion-Version": "2026-03-11",
+          },
+          body: uploadForm,
+        }
+      );
+
+      const sendUploadData = await sendUploadRes.json();
+      uploadedPhotoId = sendUploadData.id;
+    }
 
     const response = await fetch("https://api.notion.com/v1/pages", {
       method: "POST",
@@ -67,9 +104,26 @@ export async function POST(req: Request) {
               },
             }
             : {}),
+          ...(uploadedPhotoId
+            ? {
+              "写真(任意)": {
+                files: [
+                  {
+                    name: photo?.name || "stock-photo",
+                    type: "file_upload",
+                    file_upload: {
+                      id: uploadedPhotoId,
+                    },
+                  },
+                ],
+              },
+            }
+            : {}),
         },
       }),
     });
+
+
 
     if (!response.ok) {
       const errorText = await response.text();
