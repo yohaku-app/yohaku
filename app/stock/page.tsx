@@ -109,9 +109,9 @@ export default function StockPage() {
             fontSize: 16,
             fontWeight: "bold",
             borderRadius: 10,
-            border: "none",
-            background: "#0f766e",
-            color: "white",
+            border: mode === "search" ? "none" : "1px solid #ccc",
+            background: mode === "search" ? "#0f766e" : "white",
+            color: mode === "search" ? "white" : "#0f766e",
           }}
         >
           探す
@@ -125,8 +125,9 @@ export default function StockPage() {
             fontSize: 16,
             fontWeight: "bold",
             borderRadius: 10,
-            border: "1px solid #ccc",
-            background: "white",
+            border: mode === "register" ? "none" : "1px solid #ccc",
+            background: mode === "register" ? "#0f766e" : "white",
+            color: mode === "register" ? "white" : "#0f766e",
           }}
         >
           登録する
@@ -312,7 +313,13 @@ export default function StockPage() {
 
       {mode === "search" && (
         <div style={{ display: "grid", gap: 16 }}>
-          {search.trim() !== "" &&
+          {search.trim() !== "" && filteredItems.length === 0 && (
+            <p style={{ color: "#666" }}>
+              該当する材料はありませんでした。
+            </p>
+          )}
+
+          {search.trim() !== "" && filteredItems.length > 0 &&
             filteredItems.map((item, index) => (
               <div
                 key={index}
