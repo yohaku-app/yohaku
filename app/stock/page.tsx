@@ -282,37 +282,39 @@ export default function StockPage() {
         </>
       )}
 
-      <div style={{ display: "grid", gap: 16 }}>
-        {filteredItems.map((item, index) => (
-          <div
-            key={index}
-            style={{
-              border: "1px solid #ddd",
-              borderRadius: 16,
-              padding: 18,
-              background: "#fff",
-            }}
-          >
-            <div style={{ color: "#0a7", fontWeight: "bold" }}>
-              {item.area} / {item.distance}
-            </div>
+      {mode === "search" && (
+        <div style={{ display: "grid", gap: 16 }}>
+          {filteredItems.map((item, index) => (
+            <div
+              key={index}
+              style={{
+                border: "1px solid #ddd",
+                borderRadius: 16,
+                padding: 18,
+                background: "#fff",
+              }}
+            >
+              <div style={{ color: "#0a7", fontWeight: "bold" }}>
+                {item.area} / {item.distance}
+              </div>
 
-            <div style={{ fontSize: 26, fontWeight: "bold", marginTop: 8 }}>
-              {item.material}
-            </div>
+              <div style={{ fontSize: 26, fontWeight: "bold", marginTop: 8 }}>
+                {item.material}
+              </div>
 
-            <div style={{ color: "#555", marginTop: 4 }}>
-              {item.spec}・{item.quantity}
-            </div>
+              <div style={{ color: "#555", marginTop: 4 }}>
+                {item.spec}・{item.quantity}
+              </div>
 
-            <div style={{ marginTop: 10 }}>{item.pickup}</div>
+              <div style={{ marginTop: 10 }}>{item.pickup}</div>
 
-            <div style={{ marginTop: 10, color: "#666" }}>
-              現場：{item.site}
+              <div style={{ marginTop: 10, color: "#666" }}>
+                現場：{item.site}
+              </div>
             </div>
-          </div>
-        ))}
-      </div>
+          ))}
+        </div>
+      )}
     </main >
   );
 }
