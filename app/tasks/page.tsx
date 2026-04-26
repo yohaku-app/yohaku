@@ -171,13 +171,19 @@ export default function TasksPage() {
       <Link
         href="/done"
         style={{
+          display: "inline-block",
+          marginTop: 16,
+          padding: "10px 16px",
+          background: "#f3f4f6",
+          borderRadius: 10,
           textDecoration: "none",
           color: "#111",
           fontWeight: "bold",
           fontSize: 14,
+          border: "1px solid #ddd"
         }}
       >
-        完了済み
+        完了済みを見る →
       </Link>
     </main>
   );

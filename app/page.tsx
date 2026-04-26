@@ -575,13 +575,19 @@ export default function Home() {
       <Link
         href="/history"
         style={{
+          display: "inline-block",
+          marginTop: 16,
+          padding: "10px 16px",
+          background: "#f3f4f6",
+          borderRadius: 10,
           textDecoration: "none",
           color: "#111",
           fontWeight: "bold",
           fontSize: 14,
+          border: "1px solid #ddd"
         }}
       >
-        履歴
+        履歴を見る →
       </Link>
 
     </main>
