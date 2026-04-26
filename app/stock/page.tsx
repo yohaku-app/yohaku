@@ -100,9 +100,37 @@ export default function StockPage() {
         欲しい材料を検索できます。
       </p>
 
-      <div style={{ display: "flex", gap: 8, marginBottom: 16 }}>
-        <button onClick={() => setMode("search")}>探す</button>
-        <button onClick={() => setMode("register")}>登録する</button>
+      <div style={{ display: "flex", gap: 12, marginBottom: 20 }}>
+        <button
+          onClick={() => setMode("search")}
+          style={{
+            flex: 1,
+            padding: "14px",
+            fontSize: 16,
+            fontWeight: "bold",
+            borderRadius: 10,
+            border: "none",
+            background: "#0f766e",
+            color: "white",
+          }}
+        >
+          探す
+        </button>
+
+        <button
+          onClick={() => setMode("register")}
+          style={{
+            flex: 1,
+            padding: "14px",
+            fontSize: 16,
+            fontWeight: "bold",
+            borderRadius: 10,
+            border: "1px solid #ccc",
+            background: "white",
+          }}
+        >
+          登録する
+        </button>
       </div>
 
       {mode === "search" && (
@@ -284,35 +312,36 @@ export default function StockPage() {
 
       {mode === "search" && (
         <div style={{ display: "grid", gap: 16 }}>
-          {filteredItems.map((item, index) => (
-            <div
-              key={index}
-              style={{
-                border: "1px solid #ddd",
-                borderRadius: 16,
-                padding: 18,
-                background: "#fff",
-              }}
-            >
-              <div style={{ color: "#0a7", fontWeight: "bold" }}>
-                {item.area} / {item.distance}
-              </div>
+          {search.trim() !== "" &&
+            filteredItems.map((item, index) => (
+              <div
+                key={index}
+                style={{
+                  border: "1px solid #ddd",
+                  borderRadius: 16,
+                  padding: 18,
+                  background: "#fff",
+                }}
+              >
+                <div style={{ color: "#0a7", fontWeight: "bold" }}>
+                  {item.area} / {item.distance}
+                </div>
 
-              <div style={{ fontSize: 26, fontWeight: "bold", marginTop: 8 }}>
-                {item.material}
-              </div>
+                <div style={{ fontSize: 26, fontWeight: "bold", marginTop: 8 }}>
+                  {item.material}
+                </div>
 
-              <div style={{ color: "#555", marginTop: 4 }}>
-                {item.spec}・{item.quantity}
-              </div>
+                <div style={{ color: "#555", marginTop: 4 }}>
+                  {item.spec}・{item.quantity}
+                </div>
 
-              <div style={{ marginTop: 10 }}>{item.pickup}</div>
+                <div style={{ marginTop: 10 }}>{item.pickup}</div>
 
-              <div style={{ marginTop: 10, color: "#666" }}>
-                現場：{item.site}
+                <div style={{ marginTop: 10, color: "#666" }}>
+                  現場：{item.site}
+                </div>
               </div>
-            </div>
-          ))}
+            ))}
         </div>
       )}
     </main >
