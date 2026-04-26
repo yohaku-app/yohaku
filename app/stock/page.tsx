@@ -248,7 +248,21 @@ export default function StockPage() {
           style={{ width: "100%", marginBottom: "12px", padding: "8px" }}
         />
 
-        <button onClick={handleRegister}>
+        <button
+          onClick={handleRegister}
+          style={{
+            width: "100%",
+            padding: "16px",
+            fontSize: 18,
+            fontWeight: "bold",
+            background: "#0f766e",
+            color: "white",
+            border: "none",
+            borderRadius: 10,
+            marginTop: 12,
+            cursor: "pointer"
+          }}
+        >
           登録する
         </button>
       </div>
