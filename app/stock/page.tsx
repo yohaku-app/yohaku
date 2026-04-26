@@ -42,7 +42,7 @@ export default function StockPage() {
     if (data.success) {
       alert("登録できました");
     } else {
-      alert("失敗");
+      alert(data.error || data.message || "登録失敗");
     }
   };
   const stockItems = [

@@ -138,7 +138,11 @@ export async function POST(req: Request) {
   } catch (error) {
     console.error(error);
     return NextResponse.json(
-      { success: false, message: "エラー" },
+      {
+        success: false,
+        message: "エラー",
+        error: error instanceof Error ? error.message : String(error),
+      },
       { status: 500 }
     );
   }
