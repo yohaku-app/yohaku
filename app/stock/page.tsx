@@ -94,10 +94,10 @@ export default function StockPage() {
 
   return (
     <main style={{ padding: 24, paddingBottom: 100 }}>
-      <h1 style={{ fontSize: 34, marginBottom: 8 }}>近くのストック材</h1>
+      <h1 style={{ fontSize: 34, marginBottom: 8 }}>近くの余り材</h1>
 
       <p style={{ fontSize: 17, color: "#555", marginBottom: 20 }}>
-        欲しい材料を検索できます。
+        余った材料を、近くの現場同士で活用できます。
       </p>
 
       <div style={{ display: "flex", gap: 12, marginBottom: 20 }}>
@@ -130,7 +130,7 @@ export default function StockPage() {
             color: mode === "register" ? "white" : "#0f766e",
           }}
         >
-          登録する
+          シェアする
         </button>
       </div>
 
@@ -158,7 +158,7 @@ export default function StockPage() {
         <>
 
           <div style={{ marginTop: "24px", padding: "16px", border: "1px solid #ddd", borderRadius: "12px" }}>
-            <h2>ストック材登録</h2>
+            <h2>余り材登録</h2>
 
             <label style={{ fontWeight: "bold" }}>住所</label>
             <input
@@ -304,7 +304,7 @@ export default function StockPage() {
                 cursor: "pointer"
               }}
             >
-              登録する
+              シェアする
             </button>
           </div>
 
