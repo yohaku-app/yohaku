@@ -571,6 +571,19 @@ export default function Home() {
         </section>
       )}
 
+
+      <Link
+        href="/history"
+        style={{
+          textDecoration: "none",
+          color: "#111",
+          fontWeight: "bold",
+          fontSize: 14,
+        }}
+      >
+        履歴
+      </Link>
+
     </main>
   );
 }

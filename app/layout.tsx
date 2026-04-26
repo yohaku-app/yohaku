@@ -75,20 +75,10 @@ export default function RootLayout({
             やること
           </Link>
 
-          <Link
-            href="/done"
-            style={{
-              textDecoration: "none",
-              color: "#111",
-              fontWeight: "bold",
-              fontSize: 14,
-            }}
-          >
-            完了済み
-          </Link>
+        
 
           <Link
-            href="/history"
+            href="/stock"
             style={{
               textDecoration: "none",
               color: "#111",
@@ -96,7 +86,7 @@ export default function RootLayout({
               fontSize: 14,
             }}
           >
-            履歴
+            ストック材
           </Link>
 
 
@@ -112,17 +102,8 @@ export default function RootLayout({
             失敗記録
           </Link>
 
-          <Link
-            href="/stock"
-            style={{
-              textDecoration: "none",
-              color: "#111",
-              fontWeight: "bold",
-              fontSize: 14,
-            }}
-          >
-            近くの余り材
-          </Link>
+
+
 
         </nav>
         <Analytics />

@@ -168,6 +168,17 @@ export default function TasksPage() {
           ))
         )}
       </section>
+      <Link
+        href="/done"
+        style={{
+          textDecoration: "none",
+          color: "#111",
+          fontWeight: "bold",
+          fontSize: 14,
+        }}
+      >
+        完了済み
+      </Link>
     </main>
   );
 }
