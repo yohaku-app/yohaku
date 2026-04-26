@@ -17,6 +17,7 @@ export default function StockPage() {
   const [photo, setPhoto] = useState<File | null>(null)
   const [photoPreview, setPhotoPreview] = useState("")
   const [mode, setMode] = useState("search");
+  const [comment, setComment] = useState("")
 
 
 
@@ -46,51 +47,9 @@ export default function StockPage() {
       alert(data.error || data.message || "登録失敗");
     }
   };
-  const stockItems = [
-    {
-      site: "杉並A現場",
-      area: "杉並区",
-      distance: "徒歩7分",
-      distanceMinutes: 7,
-      material: "コンパネ",
-      spec: "3×6",
-      keywords: "コンパネ ベニヤ 合板 ラワン",
-      quantity: "3枚",
-      pickup: "今日引取可",
-      note: "余りあり",
-    },
-    {
-      site: "中野B現場",
-      area: "中野区",
-      distance: "徒歩10分",
-      distanceMinutes: 10,
-      material: "スタイロフォーム 30mm",
-      keywords: "スタイロ カネライトフォーム ミラフォーム 断熱材 XPS",
-      spec: "30mm",
-      quantity: "5枚",
-      pickup: "今週中",
-      note: "屋内保管",
-    },
-    {
-      site: "新宿C現場",
-      area: "新宿区",
-      distance: "徒歩12分",
-      distanceMinutes: 12,
-      material: "軽天材",
-      spec: "65",
-      quantity: "30本",
-      pickup: "明日引取可",
-      note: "一部使用済みあり",
-    },
-  ];
 
-  const filteredItems = stockItems
-    .filter((item) =>
-      (item.material + (item.keywords || "") + item.spec)
-        .toLowerCase()
-        .includes(search.toLowerCase())
-    )
-    .sort((a, b) => a.distanceMinutes - b.distanceMinutes);
+
+
 
   return (
     <main style={{ padding: 24, paddingBottom: 100 }}>
@@ -130,7 +89,7 @@ export default function StockPage() {
             color: mode === "register" ? "white" : "#0f766e",
           }}
         >
-          シェアする
+          登録する
         </button>
       </div>
 
@@ -174,77 +133,26 @@ export default function StockPage() {
               style={{ width: "100%", marginBottom: "12px", padding: "8px" }}
             />
 
-            <label style={{ fontWeight: "bold" }}>規格</label>
 
-            <select
-              onChange={(e) => setSpec(e.target.value)}
-              style={{
-                width: "100%",
-                marginBottom: "8px",
-                padding: "8px"
-              }}
-            >
-              <option value="">よくある候補を選択</option>
 
-              {(material.includes("スタイロ") ||
-                material.includes("カネライト") ||
-                material.includes("ミラフォーム")) && (
-                  <>
-                    <option value="30mm 910×1820">30mm 910×1820</option>
-                    <option value="40mm 910×1820">40mm 910×1820</option>
-                    <option value="50mm 910×1820">50mm 910×1820</option>
-                  </>
-                )}
-
-              {material.includes("コンパネ") && (
-                <>
-                  <option value="3×6 12mm">3×6 12mm</option>
-                  <option value="3×6 15mm">3×6 15mm</option>
-                </>
-              )}
-
-              {(material.includes("スリット")) && (
-                <>
-                  <option value="鉛直スリット">鉛直スリット</option>
-                  <option value="平行スリット">平行スリット</option>
-                </>
-              )}
-
-              {(material.includes("軽天") ||
-                material.includes("LGS") ||
-                material.includes("下地")) && (
-                  <>
-                    <option value="65型3m">65型3m</option>
-                    <option value="65型4m">65型4m</option>
-                  </>
-                )}
-
-              {(material.includes("PB") ||
-                material.includes("石膏ボード") ||
-                material.includes("ボード")) && (
-                  <>
-                    <option value="9.5mm">9.5mm</option>
-                    <option value="12.5mm">12.5mm</option>
-                  </>
-                )}
-            </select>
-
-            <input
-              placeholder="候補にない場合は自由入力"
-              value={spec}
-              onChange={(e) => setSpec(e.target.value)}
-              style={{
-                width: "100%",
-                marginBottom: "12px",
-                padding: "8px"
-              }}
-            />
-
-            <label style={{ fontWeight: "bold" }}>個数</label>
+            <label style={{ fontWeight: "bold" }}>数量</label>
             <input
               type="number"
               value={quantity}
               onChange={(e) => setQuantity(e.target.value)}
+              style={{ width: "100%", marginBottom: "12px", padding: "8px" }}
+
+
+
+            />
+
+
+
+            <label style={{ fontWeight: "bold" }}>コメント（自由）</label>
+            <input
+              placeholder="例：30mmです、未使用、屋内保管"
+              value={comment}
+              onChange={(e) => setComment(e.target.value)}
               style={{ width: "100%", marginBottom: "12px", padding: "8px" }}
             />
 
@@ -304,7 +212,7 @@ export default function StockPage() {
                 cursor: "pointer"
               }}
             >
-              シェアする
+              登録する
             </button>
           </div>
 
@@ -313,42 +221,13 @@ export default function StockPage() {
 
       {mode === "search" && (
         <div style={{ display: "grid", gap: 16 }}>
-          {search.trim() !== "" && filteredItems.length === 0 && (
-            <p style={{ color: "#666" }}>
-              該当する材料はありませんでした。
-            </p>
-          )}
+          <p style={{ color: "#666", fontSize: 16 }}>
+            近くの余り材を検索してください。
+          </p>
 
-          {search.trim() !== "" && filteredItems.length > 0 &&
-            filteredItems.map((item, index) => (
-              <div
-                key={index}
-                style={{
-                  border: "1px solid #ddd",
-                  borderRadius: 16,
-                  padding: 18,
-                  background: "#fff",
-                }}
-              >
-                <div style={{ color: "#0a7", fontWeight: "bold" }}>
-                  {item.area} / {item.distance}
-                </div>
-
-                <div style={{ fontSize: 26, fontWeight: "bold", marginTop: 8 }}>
-                  {item.material}
-                </div>
-
-                <div style={{ color: "#555", marginTop: 4 }}>
-                  {item.spec}・{item.quantity}
-                </div>
-
-                <div style={{ marginTop: 10 }}>{item.pickup}</div>
-
-                <div style={{ marginTop: 10, color: "#666" }}>
-                  現場：{item.site}
-                </div>
-              </div>
-            ))}
+          <p style={{ color: "#999", fontSize: 14 }}>
+            現在登録された材料はまだありません。
+          </p>
         </div>
       )}
     </main >

@@ -86,7 +86,7 @@ export default function RootLayout({
               fontSize: 14,
             }}
           >
-            ストック材
+            余り材
           </Link>
 
 
