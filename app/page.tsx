@@ -371,7 +371,7 @@ export default function Home() {
         </button>
         {loading && (
           <p style={{ marginTop: 8, color: "#666", fontSize: 14 }}>
-            （10秒ほどお待ちください）
+            （10秒~30秒ほどお待ちください）
           </p>
         )}
 
