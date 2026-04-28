@@ -590,6 +590,24 @@ export default function Home() {
         履歴を見る →
       </Link>
 
+      <Link
+        href="/tools"
+        style={{
+          display: "inline-block",
+          marginTop: 12,
+          padding: "10px 16px",
+          background: "#f3f4f6",
+          borderRadius: 10,
+          textDecoration: "none",
+          color: "#111",
+          fontWeight: "bold",
+          fontSize: 14,
+          border: "1px solid #ddd"
+        }}
+      >
+        道具QR管理 →
+      </Link>
+
     </main>
   );
 }
