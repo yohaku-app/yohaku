@@ -21,20 +21,23 @@ body {
 }
 
 @media print {
-  body * {
-    display: none;
-  }
-
-  .print-area,
-  .print-area * {
-    display: block;
+  .no-print {
+    display: none !important;
   }
 
   .print-area {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    text-align: center;
+    position: fixed !important;
+    top: 10mm !important;
+    left: 10mm !important;
+    width: 45mm !important;
+    padding: 4mm !important;
+    border: 1px solid #000 !important;
+    text-align: center !important;
+    background: white !important;
+  }
+
+  .print-area img {
+    width: 30mm !important;
+    height: 30mm !important;
   }
 }
