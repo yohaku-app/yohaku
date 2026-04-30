@@ -17,7 +17,7 @@ export default function ToolsPage() {
         : "";
 
     return (
-        <main style={{ padding: 24, paddingBottom: 100 }}>
+        <main className="no-print" style={{ padding: 24, paddingBottom: 100 }}>
             <h1 style={{ fontSize: 34, marginBottom: 8 }}>道具QR管理</h1>
 
             <p style={{ fontSize: 17, color: "#555", marginBottom: 24 }}>
