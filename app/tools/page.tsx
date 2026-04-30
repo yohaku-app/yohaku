@@ -24,7 +24,7 @@ export default function ToolsPage() {
                 道具にQRコードを貼って、保管場所や使用状況を確認できます。
             </p>
 
-            <div style={{ border: "1px solid #ddd", borderRadius: 16, padding: 18 }}>
+            <div className="no-print" style={{ border: "1px solid #ddd", borderRadius: 16, padding: 18 }}>
                 <label style={{ fontWeight: "bold" }}>道具名</label>
                 <input
                     value={toolName}
@@ -65,18 +65,17 @@ export default function ToolsPage() {
                     }}
                 />
 
-               
+
             </div>
 
             {toolName && (
-                <div
-                    style={{
-                        marginTop: 24,
-                        border: "1px solid #ddd",
-                        borderRadius: 16,
-                        padding: 18,
-                        textAlign: "center",
-                    }}
+                <div className="print-area" style={{
+                    marginTop: 24,
+                    border: "1px solid #ddd",
+                    borderRadius: 16,
+                    padding: 18,
+                    textAlign: "center",
+                }}
                 >
                     <h2>{toolName}</h2>
                     <p>保管場所：{place || "未入力"}</p>
@@ -116,7 +115,8 @@ export default function ToolsPage() {
                         {toolUrl}
                     </p>
                 </div>
-            )}
-        </main>
+            )
+            }
+        </main >
     );
 }
