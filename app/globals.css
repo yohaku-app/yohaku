@@ -21,17 +21,20 @@ body {
 }
 
 @media print {
-  .no-print {
+  body * {
     display: none;
+  }
+
+  .print-area,
+  .print-area * {
+    display: block;
   }
 
   .print-area {
-    margin: 0;
-    border: none;
+    position: absolute;
+    top: 0;
+    left: 0;
     width: 100%;
-  }
-
-  button {
-    display: none;
+    text-align: center;
   }
 }
