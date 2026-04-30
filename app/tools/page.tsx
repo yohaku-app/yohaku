@@ -108,6 +108,23 @@ export default function ToolsPage() {
                         />
                     )}
 
+                    <button
+                        onClick={() => window.print()}
+                        style={{
+                            width: "100%",
+                            padding: 14,
+                            fontSize: 16,
+                            fontWeight: "bold",
+                            background: "#111",
+                            color: "white",
+                            border: "none",
+                            borderRadius: 10,
+                            marginTop: 12,
+                        }}
+                    >
+                        印刷する
+                    </button>
+
                     <p style={{ wordBreak: "break-all", color: "#555", fontSize: 12 }}>
                         {toolUrl}
                     </p>
