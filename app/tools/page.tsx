@@ -65,20 +65,7 @@ export default function ToolsPage() {
                     }}
                 />
 
-                <button
-                    style={{
-                        width: "100%",
-                        padding: 16,
-                        fontSize: 18,
-                        fontWeight: "bold",
-                        background: "#0f766e",
-                        color: "white",
-                        border: "none",
-                        borderRadius: 10,
-                    }}
-                >
-                    QRを作る
-                </button>
+               
             </div>
 
             {toolName && (
@@ -100,8 +87,8 @@ export default function ToolsPage() {
                             src={qrUrl}
                             alt="QRコード"
                             style={{
-                                width: 240,
-                                height: 240,
+                                width: 120,
+                                height: 120,
                                 marginTop: 16,
                                 marginBottom: 16,
                             }}
