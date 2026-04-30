@@ -13,14 +13,65 @@ export default function ToolsPage() {
             : "";
 
     const qrUrl = toolUrl
-        ? `https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=${encodeURIComponent(
-            toolUrl
-        )}`
+        ? `https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=${encodeURIComponent(toolUrl)}`
         : "";
+
+    function handlePrint() {
+        const printContents = document.querySelector(".print-area")?.outerHTML;
+        if (!printContents) return;
+
+        const win = window.open("", "", "width=400,height=600");
+        if (!win) return;
+
+        win.document.write(`
+      <html>
+        <head>
+          <title>QR印刷</title>
+          <style>
+            body {
+              font-family: Arial, sans-serif;
+              text-align: center;
+              margin: 10mm;
+            }
+            .print-area {
+              width: 45mm;
+              padding: 4mm;
+              border: 1px solid #000;
+              text-align: center;
+              margin: 0 auto;
+            }
+            img {
+              width: 30mm;
+              height: 30mm;
+            }
+            button {
+              display: none;
+            }
+            h2 {
+              font-size: 16px;
+              margin: 0 0 6px;
+            }
+            p {
+              font-size: 11px;
+              margin: 4px 0;
+            }
+          </style>
+        </head>
+        <body>
+          ${printContents}
+        </body>
+      </html>
+    `);
+
+        win.document.close();
+        win.focus();
+        win.print();
+        win.close();
+    }
 
     return (
         <main style={{ padding: 24, paddingBottom: 100 }}>
-            <div className="no-print">
+            <div>
                 <h1 style={{ fontSize: 34, marginBottom: 8 }}>道具QR管理</h1>
 
                 <p style={{ fontSize: 17, color: "#555", marginBottom: 24 }}>
@@ -77,7 +128,19 @@ export default function ToolsPage() {
             </div>
 
             {toolName && (
-                <div className="print-area">
+                <div
+                    className="print-area"
+                    style={{
+                        marginTop: 24,
+                        border: "1px solid #ddd",
+                        borderRadius: 16,
+                        padding: 18,
+                        textAlign: "center",
+                        maxWidth: 280,
+                        marginLeft: "auto",
+                        marginRight: "auto",
+                    }}
+                >
                     <h2 style={{ fontSize: 18, margin: "0 0 6px" }}>{toolName}</h2>
 
                     {qrUrl && (
@@ -95,45 +158,20 @@ export default function ToolsPage() {
                         {place || "保管場所未入力"}
                     </p>
 
-                    {memo && (
-                        <p style={{ fontSize: 11, margin: "4px 0 0" }}>{memo}</p>
-                    )}
+                    {memo && <p style={{ fontSize: 11, margin: "4px 0 0" }}>{memo}</p>}
 
                     <button
-                        className="no-print"
-                        onClick={() => {
-                            const printContents = document.querySelector(".print-area")?.innerHTML;
-                            if (!printContents) return;
-
-                            const win = window.open("", "", "width=400,height=600");
-
-                            if (!win) return;
-
-                            win.document.write(`
-      <html>
-        <head>
-          <title>QR印刷</title>
-          <style>
-            body {
-              font-family: Arial, sans-serif;
-              text-align: center;
-              margin: 10mm;
-            }
-            img {
-              width: 30mm;
-              height: 30mm;
-            }
-          </style>
-        </head>
-        <body>
-          ${printContents}
-        </body>
-      </html>
-    `);
-                            win.document.close();
-                            win.focus();
-                            win.print();
-                            win.close();
+                        onClick={handlePrint}
+                        style={{
+                            width: "100%",
+                            padding: 14,
+                            fontSize: 16,
+                            fontWeight: "bold",
+                            background: "#111",
+                            color: "white",
+                            border: "none",
+                            borderRadius: 10,
+                            marginTop: 12,
                         }}
                     >
                         印刷する
