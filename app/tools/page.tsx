@@ -101,17 +101,39 @@ export default function ToolsPage() {
 
                     <button
                         className="no-print"
-                        onClick={() => window.print()}
-                        style={{
-                            width: "100%",
-                            padding: 14,
-                            fontSize: 16,
-                            fontWeight: "bold",
-                            background: "#111",
-                            color: "white",
-                            border: "none",
-                            borderRadius: 10,
-                            marginTop: 12,
+                        onClick={() => {
+                            const printContents = document.querySelector(".print-area")?.innerHTML;
+                            if (!printContents) return;
+
+                            const win = window.open("", "", "width=400,height=600");
+
+                            if (!win) return;
+
+                            win.document.write(`
+      <html>
+        <head>
+          <title>QR印刷</title>
+          <style>
+            body {
+              font-family: Arial, sans-serif;
+              text-align: center;
+              margin: 10mm;
+            }
+            img {
+              width: 30mm;
+              height: 30mm;
+            }
+          </style>
+        </head>
+        <body>
+          ${printContents}
+        </body>
+      </html>
+    `);
+                            win.document.close();
+                            win.focus();
+                            win.print();
+                            win.close();
                         }}
                     >
                         印刷する
