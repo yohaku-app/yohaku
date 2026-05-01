@@ -1,17 +1,32 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export default function ToolsPage() {
     const [toolName, setToolName] = useState("");
     const [place, setPlace] = useState("");
     const [memo, setMemo] = useState("");
 
+
+    useEffect(() => {
+        const params = new URLSearchParams(window.location.search);
+
+        const nameParam = params.get("name");
+        const placeParam = params.get("place");
+        const memoParam = params.get("memo");
+
+        if (nameParam) setToolName(nameParam);
+        if (placeParam) setPlace(placeParam);
+        if (memoParam) setMemo(memoParam);
+    }, []);
+
     const toolUrl =
         typeof window !== "undefined" && toolName
-            ? `${window.location.origin}/tools?name=${encodeURIComponent(toolName)}`
+            ? `${window.location.origin}/tools?name=${encodeURIComponent(
+                toolName
+            )}&place=${encodeURIComponent(place)}&memo=${encodeURIComponent(memo)}`
             : "";
-
+            
     const qrUrl = toolUrl
         ? `https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=${encodeURIComponent(toolUrl)}`
         : "";
