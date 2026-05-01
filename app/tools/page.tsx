@@ -26,7 +26,7 @@ export default function ToolsPage() {
                 toolName
             )}&place=${encodeURIComponent(place)}&memo=${encodeURIComponent(memo)}`
             : "";
-            
+
     const qrUrl = toolUrl
         ? `https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=${encodeURIComponent(toolUrl)}`
         : "";
@@ -200,7 +200,7 @@ export default function ToolsPage() {
                                     await navigator.share({
                                         title: toolName || "道具QR",
                                         text: "QRコードを共有",
-                                        url: window.location.href,
+                                        url: toolUrl,
                                     });
                                 } catch (e) {
                                     console.log("共有キャンセル");
