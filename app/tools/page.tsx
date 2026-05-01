@@ -176,7 +176,7 @@ export default function ToolsPage() {
                     {memo && <p style={{ fontSize: 11, margin: "4px 0 0" }}>{memo}</p>}
 
                     <button
-                        onClick={handlePrint}
+                        onClick={() => window.print()}
                         style={{
                             width: "100%",
                             padding: 14,
