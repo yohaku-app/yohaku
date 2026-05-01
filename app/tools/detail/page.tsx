@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { supabase } from "@/lib/supabase";
 
 export default function ToolDetailPage() {
     const [toolName, setToolName] = useState("");
@@ -12,37 +13,51 @@ export default function ToolDetailPage() {
     useEffect(() => {
         const params = new URLSearchParams(window.location.search);
 
-        const name = params.get("name") || "道具名未入力";
-        const placeValue = params.get("place") || "管理場所未入力";
+        const name = params.get("name") || "";
+        const placeValue = params.get("place") || "";
 
         setToolName(name);
         setPlace(placeValue);
 
-        const key = `tool-status-${name}-${placeValue}`;
-        setStorageKey(key);
-
-        const saved = localStorage.getItem(key);
-        if (saved) {
-            const data = JSON.parse(saved);
-            setUser(data.user || "未使用");
-            setLastUpdated(data.lastUpdated || "未更新");
-        }
+        loadData(name, placeValue);
     }, []);
 
-    function saveStatus(nextUser: string) {
-        const now = new Date().toLocaleString("ja-JP");
+    async function loadData(name: string, place: string) {
+        const { data } = await supabase
+            .from("tools")
+            .select("*")
+            .eq("name", name)
+            .eq("place", place)
+            .single();
+
+        if (data) {
+            setUser(data.user_name || "未使用");
+            setLastUpdated(data.updated_at || "未更新");
+        }
+    }
+
+    async function saveStatus(nextUser: string) {
+        const now = new Date().toISOString();
 
         setUser(nextUser);
         setLastUpdated(now);
 
-        localStorage.setItem(
-            storageKey,
-            JSON.stringify({
-                user: nextUser,
-                lastUpdated: now,
-            })
-        );
+        await supabase
+            .from("tools")
+            .upsert(
+                {
+                    name: toolName,
+                    place: place,
+                    user_name: nextUser,
+                    updated_at: now,
+                },
+                {
+                    onConflict: "name,place",
+                }
+            );
     }
+
+
 
     function borrowTool() {
         const name = window.prompt("使用者名を入力してください");
