@@ -22,7 +22,7 @@ export default function ToolsPage() {
 
     const toolUrl =
         typeof window !== "undefined" && toolName
-            ? `${window.location.origin}/tools?name=${encodeURIComponent(
+            ? `${window.location.origin}/tools/detail?name=${encodeURIComponent(
                 toolName
             )}&place=${encodeURIComponent(place)}&memo=${encodeURIComponent(memo)}`
             : "";
