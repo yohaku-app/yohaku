@@ -176,6 +176,38 @@ export default function ToolsPage() {
                     >
                         印刷する
                     </button>
+
+                    <button
+                        className="no-print"
+                        onClick={async () => {
+                            if (navigator.share) {
+                                try {
+                                    await navigator.share({
+                                        title: toolName || "道具QR",
+                                        text: "QRコードを共有",
+                                        url: window.location.href,
+                                    });
+                                } catch (e) {
+                                    console.log("共有キャンセル");
+                                }
+                            } else {
+                                alert("共有できません");
+                            }
+                        }}
+                        style={{
+                            width: "100%",
+                            padding: 14,
+                            fontSize: 16,
+                            fontWeight: "bold",
+                            background: "#2563eb",
+                            color: "white",
+                            border: "none",
+                            borderRadius: 10,
+                            marginTop: 10,
+                        }}
+                    >
+                        共有する
+                    </button>
                 </div>
             )}
         </main>
