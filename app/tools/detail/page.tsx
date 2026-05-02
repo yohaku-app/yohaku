@@ -21,7 +21,7 @@ export default function ToolDetailPage() {
         setToolName(name);
         setPlace(placeValue);
 
-        loadData(name, placeValue);
+        //loadData(name, placeValue);
     }, []);
 
     async function loadData(name: string, place: string) {
