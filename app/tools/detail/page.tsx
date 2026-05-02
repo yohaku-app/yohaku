@@ -8,11 +8,8 @@ export default function ToolDetailPage() {
     const [place, setPlace] = useState("");
     const [user, setUser] = useState("未使用");
     const [lastUpdated, setLastUpdated] = useState("未更新");
-    const [storageKey, setStorageKey] = useState("");
 
     useEffect(() => {
-        if (typeof window === "undefined") return;
-
         const params = new URLSearchParams(window.location.search);
 
         const name = params.get("name") || "";
@@ -21,10 +18,12 @@ export default function ToolDetailPage() {
         setToolName(name);
         setPlace(placeValue);
 
-        //loadData(name, placeValue);
+        loadData(name, placeValue);
     }, []);
 
     async function loadData(name: string, place: string) {
+        if (!name || !place) return;
+
         const { data, error } = await supabase
             .from("tools")
             .select("*")
@@ -33,16 +32,16 @@ export default function ToolDetailPage() {
             .maybeSingle();
 
         if (error) {
+            alert("読込エラー: " + error.message);
             console.error(error);
             return;
         }
 
-        if (data) {
-            setUser(data.user_name || "未使用");
-            setLastUpdated(data.updated_at || "未更新");
-        }
-    }
+        if (!data) return;
 
+        setUser(data.user_name || "未使用");
+        setLastUpdated(data.updated_at || "未更新");
+    }
 
     async function saveStatus(nextUser: string) {
         const now = new Date().toISOString();
@@ -74,9 +73,6 @@ export default function ToolDetailPage() {
         setLastUpdated(now);
     }
 
-
-
-
     function borrowTool() {
         const name = window.prompt("使用者名を入力してください");
 
@@ -88,10 +84,6 @@ export default function ToolDetailPage() {
     function returnTool() {
         saveStatus("未使用");
     }
-
-    
-
-
 
     return (
         <main style={{ padding: 24, paddingBottom: 100 }}>
