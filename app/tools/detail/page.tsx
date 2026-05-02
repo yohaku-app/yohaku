@@ -11,6 +11,8 @@ export default function ToolDetailPage() {
     const [storageKey, setStorageKey] = useState("");
 
     useEffect(() => {
+        if (typeof window === "undefined") return;
+
         const params = new URLSearchParams(window.location.search);
 
         const name = params.get("name") || "";
