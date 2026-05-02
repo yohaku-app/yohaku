@@ -110,7 +110,7 @@ export default function ToolDetailPage() {
 
                 <p style={{ fontSize: 18 }}>
                     <strong>使用者：</strong>
-                    {user}
+                    {user === "未使用" ? "未使用" : `${user}（使用中）`}
                 </p>
 
                 <p style={{ fontSize: 18 }}>
@@ -120,19 +120,20 @@ export default function ToolDetailPage() {
 
                 <button
                     onClick={borrowTool}
+                    disabled={user !== "未使用"}
                     style={{
                         width: "100%",
                         padding: 16,
                         fontSize: 18,
                         fontWeight: "bold",
-                        background: "#2563eb",
+                        background: user !== "未使用" ? "#aaa" : "#2563eb",
                         color: "white",
                         border: "none",
                         borderRadius: 10,
                         marginTop: 20,
                     }}
                 >
-                    借りる
+                    {user !== "未使用" ? "貸出中" : "借りる"}
                 </button>
 
                 <button
