@@ -8,12 +8,15 @@ export default function ToolDetailPage() {
     const [place, setPlace] = useState("");
     const [user, setUser] = useState("未使用");
     const [lastUpdated, setLastUpdated] = useState("未更新");
+    const [memo, setMemo] = useState("");
 
     useEffect(() => {
         const params = new URLSearchParams(window.location.search);
 
         const name = params.get("name") || "";
         const placeValue = params.get("place") || "";
+        const memoValue = params.get("memo") || "";
+        setMemo(memoValue);
 
         setToolName(name);
         setPlace(placeValue);
@@ -106,6 +109,11 @@ export default function ToolDetailPage() {
                 <p style={{ fontSize: 18 }}>
                     <strong>管理場所：</strong>
                     {place}
+                </p>
+
+                <p style={{ fontSize: 18 }}>
+                    <strong>メモ：</strong>
+                    {memo || "なし"}
                 </p>
 
                 <p style={{ fontSize: 18 }}>
