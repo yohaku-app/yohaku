@@ -147,7 +147,7 @@ export default function Home() {
           }}
         >
           無駄な失敗は飛ばして、
-          <span style={{ color: "#1d8cff", fontWeight: "bold" }}>
+          <span style={{ color: "#3aa0ff", fontWeight: 600 }}>
             価値ある失敗
           </span>
           へ。<br />
