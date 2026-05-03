@@ -107,12 +107,12 @@ export default function Home() {
 
     const timer2 = setTimeout(() => {
       setFadeOut(true);
-    }, 2500);
+    }, 3500);
 
     const timer3 = setTimeout(() => {
       setShowSplash(false);
       sessionStorage.setItem("yohakuSplashShown", "true");
-    }, 3500);
+    }, 4500);
 
     return () => {
       clearTimeout(timer1);
