@@ -27,12 +27,15 @@ type Result = {
 };
 
 export default function Home() {
+
   const [inputText, setInputText] = useState("");
   const [imageDataUrl, setImageDataUrl] = useState<string | null>(null);
   const [imageName, setImageName] = useState<string>("");
 
   const [loading, setLoading] = useState(false);
   const [showSplash, setShowSplash] = useState(false);
+  const [splashStep, setSplashStep] = useState<"logo" | "message" | "done">("logo");
+  const [fadeOut, setFadeOut] = useState(false);
   const [res, setRes] = useState<Result | null>(null);
   const [err, setErr] = useState<string | null>(null);
 
@@ -96,15 +99,49 @@ export default function Home() {
 
     if (!alreadyShown) {
       setShowSplash(true);
-
-      const timer = setTimeout(() => {
-        setShowSplash(false);
-        sessionStorage.setItem("yohakuSplashShown", "true");
-      }, 800);
-
-      return () => clearTimeout(timer);
     }
+
+    const timer1 = setTimeout(() => {
+      setSplashStep("message");
+    }, 800);
+
+    const timer2 = setTimeout(() => {
+      setFadeOut(true);
+    }, 1800);
+
+    const timer3 = setTimeout(() => {
+      setShowSplash(false);
+      sessionStorage.setItem("yohakuSplashShown", "true");
+    }, 2800);
+
+    return () => {
+      clearTimeout(timer1);
+      clearTimeout(timer2);
+      clearTimeout(timer3);
+    };
   }, []);
+
+  if (showSplash && splashStep === "message") {
+    return (
+      <div
+        style={{
+          minHeight: "100vh",
+          background: "#031b4e",
+          color: "white",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          opacity: fadeOut ? 0 : 1,
+          transition: "opacity 1s ease",
+        }}
+      >
+        <p style={{ textAlign: "center", lineHeight: 1.8 }}>
+          無駄な失敗は飛ばして、価値のある失敗へ。<br />
+          先人の失敗から学ぶ。
+        </p>
+      </div>
+    );
+  }
 
   if (showSplash) {
     return (
