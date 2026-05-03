@@ -107,12 +107,12 @@ export default function Home() {
 
     const timer2 = setTimeout(() => {
       setFadeOut(true);
-    }, 1800);
+    }, 2500);
 
     const timer3 = setTimeout(() => {
       setShowSplash(false);
       sessionStorage.setItem("yohakuSplashShown", "true");
-    }, 2800);
+    }, 3500);
 
     return () => {
       clearTimeout(timer1);
@@ -125,9 +125,11 @@ export default function Home() {
     return (
       <div
         style={{
-          minHeight: "100vh",
-          background: "#031b4e",
-          color: "white",
+          position: "fixed",
+          inset: 0,
+          zIndex: 9999,
+          background: "white",
+          color: "#031b4e",
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
@@ -147,6 +149,9 @@ export default function Home() {
     return (
       <div
         style={{
+          position: "fixed",
+          inset: 0,
+          zIndex: 9999,
           minHeight: "100vh",
           background: "#031b4e",
           display: "flex",
