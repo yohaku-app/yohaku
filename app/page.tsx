@@ -137,8 +137,20 @@ export default function Home() {
           transition: "opacity 1s ease",
         }}
       >
-        <p style={{ textAlign: "center", lineHeight: 1.8 }}>
-          無駄な失敗は飛ばして、価値のある失敗へ。<br />
+        <p
+          style={{
+            textAlign: "center",
+            lineHeight: 1.8,
+            padding: "0 20px",
+            fontFamily: '"Noto Sans JP", sans-serif',
+            fontWeight: 500
+          }}
+        >
+          無駄な失敗は飛ばして、
+          <span style={{ color: "#1d8cff", fontWeight: "bold" }}>
+            価値ある失敗
+          </span>
+          へ。<br />
           先人の失敗から学ぶ。
         </p>
       </div>
