@@ -289,9 +289,6 @@ export default function Home() {
       }}
     >
       <h1 style={{ marginBottom: 8 }}>YOHAKU | 段取り予報</h1>
-      <p style={{ fontSize: 14, color: "#666", marginBottom: 12 }}>
-        先人の失敗から学び、無駄な失敗を減らす。
-      </p>
 
 
       <p style={{ color: "#555", marginBottom: 24 }}>
