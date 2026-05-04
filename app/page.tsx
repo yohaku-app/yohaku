@@ -44,14 +44,21 @@ export default function Home() {
   const [totalSavedMoney, setTotalSavedMoney] = useState(0);
   const [improvementCount, setImprovementCount] = useState(0);
 
+  const [hiddenItems, setHiddenItems] = useState<string[]>([]);
+  const [fadingItems, setFadingItems] = useState<string[]>([]);
+
+
+
   useEffect(() => {
     const savedCount = localStorage.getItem("improvementCount");
     const savedHours = localStorage.getItem("totalSavedHours");
     const savedMoney = localStorage.getItem("totalSavedMoney");
+    const savedHiddenItems = localStorage.getItem("hiddenItems");
 
     if (savedCount) setImprovementCount(Number(savedCount));
     if (savedHours) setTotalSavedHours(Number(savedHours));
     if (savedMoney) setTotalSavedMoney(Number(savedMoney));
+    if (savedHiddenItems) setHiddenItems(JSON.parse(savedHiddenItems));
   }, []);
 
   const [doneItems, setDoneItems] = useState<{ [key: number]: boolean }>({});
@@ -236,7 +243,6 @@ export default function Home() {
 
 
   function handleItemDone(item: string, index: number) {
-    if (doneItems[index]) return;
 
     const weight = getWeight(item);
 
@@ -248,23 +254,18 @@ export default function Home() {
     setTotalSavedMoney(nextMoney);
     setImprovementCount(nextCount);
 
-    setDoneItems({
-      ...doneItems,
-      [index]: true,
-    });
 
-    setRes((prev) => {
-      if (!prev) return prev;
+    // まず薄くする
+    setFadingItems((prev) => [...prev, item]);
 
-      const target = prev.likely_issues[index];
-
-      return {
-        ...prev,
-        likely_issues: prev.likely_issues.filter(
-          (item) => item !== target
-        ),
-      };
-    });
+    // 少し待ってから完全に消す
+    setTimeout(() => {
+      setHiddenItems((prev) => {
+        const next = [...prev, item];
+        localStorage.setItem("hiddenItems", JSON.stringify(next));
+        return next;
+      });
+    }, 250);
 
 
 
@@ -569,39 +570,42 @@ export default function Home() {
           </h3>
 
           <div style={{ marginBottom: 24 }}>
-            {res.likely_issues.slice(0, 3).map((x, i) => (
-              <div
-                key={i}
-                style={{
-                  border: "1px solid #ddd",
-                  borderRadius: 12,
-                  padding: 16,
-                  marginBottom: 12,
-                  background: "#fff",
-                }}
-              >
-                <div style={{ fontWeight: "bold", marginBottom: 8 }}>
-                  {x.rank}位　{x.title}
-                </div>
-                <div style={{ marginBottom: 4 }}>損失：{x.loss}</div>
-                <div style={{ marginBottom: 4 }}>追加労働：{x.overtime}</div>
-                <div>緊急化率：{x.risk}</div>
-                <button
-                  onClick={() => handleItemDone(x.title, i)}
+            {res.likely_issues
+              .filter((x) => !hiddenItems.includes(x.title))
+              .slice(0, 3)
+              .map((x, i) => (
+                <div
+                  key={i}
                   style={{
-                    marginTop: 10,
-                    padding: "6px 10px",
-                    borderRadius: 6,
-                    border: "1px solid #ccc",
+                    border: "1px solid #ddd",
+                    borderRadius: 12,
+                    padding: 16,
+                    marginBottom: 12,
                     background: "#fff",
-                    cursor: "pointer",
-                    fontSize: 12,
                   }}
                 >
-                  予防効果として記録
-                </button>
-              </div>
-            ))}
+                  <div style={{ fontWeight: "bold", marginBottom: 8 }}>
+                    {x.rank}位　{x.title}
+                  </div>
+                  <div style={{ marginBottom: 4 }}>損失：{x.loss}</div>
+                  <div style={{ marginBottom: 4 }}>追加労働：{x.overtime}</div>
+                  <div>緊急化率：{x.risk}</div>
+                  <button
+                    onClick={() => handleItemDone(x.title, i)}
+                    style={{
+                      marginTop: 10,
+                      padding: "6px 10px",
+                      borderRadius: 6,
+                      border: "1px solid #ccc",
+                      background: "#fff",
+                      cursor: "pointer",
+                      fontSize: 12,
+                    }}
+                  >
+                    予防効果として記録
+                  </button>
+                </div>
+              ))}
           </div>
 
           {res.detail && (
