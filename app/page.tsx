@@ -28,6 +28,7 @@ type Result = {
 
 export default function Home() {
 
+
   const [inputText, setInputText] = useState("");
   const [imageDataUrl, setImageDataUrl] = useState<string | null>(null);
   const [imageName, setImageName] = useState<string>("");
@@ -42,6 +43,16 @@ export default function Home() {
   const [totalSavedHours, setTotalSavedHours] = useState(0);
   const [totalSavedMoney, setTotalSavedMoney] = useState(0);
   const [improvementCount, setImprovementCount] = useState(0);
+
+  useEffect(() => {
+    const savedCount = localStorage.getItem("improvementCount");
+    const savedHours = localStorage.getItem("totalSavedHours");
+    const savedMoney = localStorage.getItem("totalSavedMoney");
+
+    if (savedCount) setImprovementCount(Number(savedCount));
+    if (savedHours) setTotalSavedHours(Number(savedHours));
+    if (savedMoney) setTotalSavedMoney(Number(savedMoney));
+  }, []);
 
   const [doneItems, setDoneItems] = useState<{ [key: number]: boolean }>({});
 
@@ -107,12 +118,12 @@ export default function Home() {
 
     const timer2 = setTimeout(() => {
       setFadeOut(true);
-    }, 4500);
+    }, 4000);
 
     const timer3 = setTimeout(() => {
       setShowSplash(false);
       sessionStorage.setItem("yohakuSplashShown", "true");
-    }, 5500);
+    }, 5000);
 
     return () => {
       clearTimeout(timer1);
@@ -137,21 +148,14 @@ export default function Home() {
           transition: "opacity 1s ease",
         }}
       >
-        <p
-          style={{
-            textAlign: "center",
-            lineHeight: 1.8,
-            padding: "0 20px",
-            fontFamily: '"Noto Sans JP", sans-serif',
-            fontWeight: 500
-          }}
-        >
-          無駄な失敗は飛ばして、
-          <span style={{ color: "#3aa0ff", fontWeight: 600 }}>
-            価値ある失敗
-          </span>
-          へ。<br />
-          先人の失敗から学ぶ。
+        <p style={{
+          textAlign: "center",
+          lineHeight: 1.8,
+          padding: "0 20px",
+          fontFamily: "'Noto Sans JP', sans-serif",
+          fontWeight: 500
+        }}>
+          先人の失敗から学ぶ
         </p>
       </div>
     );
@@ -249,11 +253,19 @@ export default function Home() {
       [index]: true,
     });
 
-    setTodoList((prev) => {
-      const next = prev.includes(item) ? prev : [...prev, item];
-      localStorage.setItem("todoList", JSON.stringify(next));
-      return next;
+    setRes((prev) => {
+      if (!prev) return prev;
+
+      const target = prev.missing_arrangements[index];
+
+      return {
+        ...prev,
+        missing_arrangements: prev.missing_arrangements.filter(
+          (item) => item !== target
+        ),
+      };
     });
+
 
 
 
@@ -459,24 +471,35 @@ export default function Home() {
               marginBottom: 16,
             }}
           >
-            結果
+            予報結果
           </h2>
 
           <div style={{ marginBottom: 20, padding: 16, border: "1px solid #ddd", borderRadius: 10, background: "#fafafa" }}>
-            <h3 style={{ fontSize: 20, fontWeight: "bold", color: "#3b82f6", marginBottom: 12 }}>累計改善</h3>
+            <h3 style={{ fontSize: 20, fontWeight: "bold", color: "#3b82f6", marginBottom: 12 }}>累計予防</h3>
             <div style={{ lineHeight: 1.8 }}>
-              <div>改善回数：<strong>{improvementCount}回</strong></div>
-              <div>
-                累計削減時間：
-                <strong>
+              <div style={{ fontSize: 18, marginBottom: 10 }}>
+                予防回数：<strong>{improvementCount}回</strong>
+              </div>
+
+              <div style={{ fontSize: 13, color: "#666", lineHeight: 1.8 }}>
+                <div>
+                  累計削減時間：
+                  約
                   {(() => {
                     const hour = Math.floor(totalSavedHours);
                     const min = Math.round((totalSavedHours - hour) * 60);
                     return `${hour}時間${min}分`;
                   })()}
-                </strong>
+                </div>
+
+                <div>
+                  累計削減金額：約{totalSavedMoney.toLocaleString()}円
+                </div>
+
+                <div style={{ fontSize: 12, color: "#888", marginTop: 4 }}>
+                  ※目安
+                </div>
               </div>
-              <div>累計削減金額：<strong>{totalSavedMoney.toLocaleString()}円</strong></div>
             </div>
           </div>
 
@@ -511,17 +534,25 @@ export default function Home() {
                 </div>
               </div>
 
-              <div style={{ flex: 1, background: "#3b82f6", color: "#fff", padding: 16, borderRadius: 10 }}>
-                <h3 style={{ fontSize: 14, opacity: 0.8 }}>余分労働時間</h3>
-                <div style={{ fontSize: 28, fontWeight: "bold" }}>
-                  {(() => { const h = parseFloat(res.overtime_hours_expected); const hour = Math.floor(h); const min = Math.round((h - hour) * 60); return `${hour}時間${min}分`; })()}
-                </div>
-              </div>
 
-              <div style={{ flex: 1, background: "#3b82f6", color: "#fff", padding: 16, borderRadius: 10 }}>
-                <h3 style={{ fontSize: 14, opacity: 0.8 }}>想定損失</h3>
-                <div style={{ fontSize: 28, fontWeight: "bold" }}>
-                  {Number(res.loss_yen_expected).toLocaleString()}円
+
+              <div style={{ fontSize: 12, color: "#888", marginTop: 8, lineHeight: 1.6 }}>
+                <div>
+                  余分労働時間：約
+                  {(() => {
+                    const h = parseFloat(res.overtime_hours_expected);
+                    const hour = Math.floor(h);
+                    const min = Math.round((h - hour) * 60);
+                    return `${hour}時間${min}分`;
+                  })()}
+                </div>
+
+                <div>
+                  想定損失：約{Number(res.loss_yen_expected).toLocaleString()}円
+                </div>
+
+                <div style={{ marginTop: 4 }}>
+                  ※目安
                 </div>
               </div>
 
@@ -538,6 +569,7 @@ export default function Home() {
             {res.missing_arrangements.slice(0, 3).map((x, i) => {
               const taskText = `${x.title}｜期限:${x.deadline}｜理由:${x.reason}`;
               const alreadyAdded = todoList.includes(taskText);
+              if (alreadyAdded) return null;
 
               return (
                 <div
@@ -574,7 +606,7 @@ export default function Home() {
                       opacity: alreadyAdded ? 0.7 : 1,
                     }}
                   >
-                    {alreadyAdded ? "追加済み" : "やることリストに移動"}
+                    {!alreadyAdded ? "記録済み" : "予防効果として記録"}
                   </button>
                 </div>
               );
