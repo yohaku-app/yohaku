@@ -256,11 +256,11 @@ export default function Home() {
     setRes((prev) => {
       if (!prev) return prev;
 
-      const target = prev.missing_arrangements[index];
+      const target = prev.likely_issues[index];
 
       return {
         ...prev,
-        missing_arrangements: prev.missing_arrangements.filter(
+        likely_issues: prev.likely_issues.filter(
           (item) => item !== target
         ),
       };
@@ -538,7 +538,7 @@ export default function Home() {
 
               <div style={{ fontSize: 12, color: "#888", marginTop: 8, lineHeight: 1.6 }}>
                 <div>
-                  余分労働時間：約
+                  余分追加時間：約
                   {(() => {
                     const h = parseFloat(res.overtime_hours_expected);
                     const hour = Math.floor(h);
@@ -557,61 +557,10 @@ export default function Home() {
               </div>
 
             </div>
+
+
           </div>
 
-
-
-          <h3 style={{ fontSize: 24, fontWeight: "bold", color: "#3b82f6", marginBottom: 8 }}>
-            先に押さえること
-          </h3>
-
-          <div style={{ marginBottom: 24 }}>
-            {res.missing_arrangements.slice(0, 3).map((x, i) => {
-              const taskText = `${x.title}｜期限:${x.deadline}｜理由:${x.reason}`;
-              const alreadyAdded = todoList.includes(taskText);
-              if (alreadyAdded) return null;
-
-              return (
-                <div
-                  key={i}
-                  style={{
-                    border: "1px solid #ddd",
-                    borderRadius: 12,
-                    padding: 16,
-                    marginBottom: 12,
-                    background: "#fff",
-                  }}
-                >
-                  <div style={{ fontWeight: "bold", marginBottom: 8 }}>
-                    {x.title}
-                  </div>
-                  <div style={{ marginBottom: 4 }}>
-                    期限：{x.deadline}
-                  </div>
-                  <div style={{ marginBottom: 10 }}>
-                    理由：{x.reason}
-                  </div>
-
-                  <button
-                    onClick={() => handleItemDone(taskText, i)}
-                    disabled={alreadyAdded}
-                    style={{
-                      padding: "8px 12px",
-                      borderRadius: 8,
-                      border: "1px solid #ccc",
-                      background: alreadyAdded ? "#e5e7eb" : "#fff",
-                      color: alreadyAdded ? "#888" : "#000",
-                      cursor: alreadyAdded ? "not-allowed" : "pointer",
-                      fontSize: 14,
-                      opacity: alreadyAdded ? 0.7 : 1,
-                    }}
-                  >
-                    {!alreadyAdded ? "記録済み" : "予防効果として記録"}
-                  </button>
-                </div>
-              );
-            })}
-          </div>
 
 
 
@@ -635,8 +584,22 @@ export default function Home() {
                   {x.rank}位　{x.title}
                 </div>
                 <div style={{ marginBottom: 4 }}>損失：{x.loss}</div>
-                <div style={{ marginBottom: 4 }}>余分労働：{x.overtime}</div>
+                <div style={{ marginBottom: 4 }}>追加労働：{x.overtime}</div>
                 <div>緊急化率：{x.risk}</div>
+                <button
+                  onClick={() => handleItemDone(x.title, i)}
+                  style={{
+                    marginTop: 10,
+                    padding: "6px 10px",
+                    borderRadius: 6,
+                    border: "1px solid #ccc",
+                    background: "#fff",
+                    cursor: "pointer",
+                    fontSize: 12,
+                  }}
+                >
+                  予防効果として記録
+                </button>
               </div>
             ))}
           </div>
