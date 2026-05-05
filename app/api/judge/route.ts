@@ -206,6 +206,8 @@ risk（緊急化レベル）
     ];
 
     if (imageDataUrl) {
+      console.log("imageDataUrl:", imageDataUrl);
+      
       inputContent.push({
         type: "input_image",
         image_url: {
