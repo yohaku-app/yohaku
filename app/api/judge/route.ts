@@ -208,7 +208,9 @@ risk（緊急化レベル）
     if (imageDataUrl) {
       inputContent.push({
         type: "input_image",
-        image_url: imageDataUrl,
+        image_url: {
+          url: imageDataUrl
+        }
       });
     }
 
