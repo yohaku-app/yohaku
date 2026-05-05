@@ -280,6 +280,24 @@ export default function Home() {
     localStorage.setItem("improvementCount", String(nextCount));
   }
 
+  async function uploadImage(file: File) {
+    const formData = new FormData();
+    formData.append("file", file);
+
+    const res = await fetch("/api/upload-image", {
+      method: "POST",
+      body: formData,
+    });
+
+    const data = await res.json();
+
+    if (!res.ok) {
+      throw new Error(data.error || "画像アップロードに失敗しました");
+    }
+
+    return data.url;
+  }
+
 
   async function handleImageChange(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0];
@@ -311,13 +329,21 @@ export default function Home() {
     setDoneItems({});
     localStorage.removeItem("doneItems");
 
+    let imageUrl = "";
+
+    if (imageDataUrl) {
+      const blob = await fetch(imageDataUrl).then((r) => r.blob());
+      const file = new File([blob], imageName || "image.jpg", { type: blob.type });
+      imageUrl = await uploadImage(file);
+    }
+
     try {
       const r = await fetch("/api/judge", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           inputText,
-          imageDataUrl,
+          imageDataUrl: imageUrl,
         }),
       });
 
