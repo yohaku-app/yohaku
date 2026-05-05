@@ -97,6 +97,7 @@ export async function POST(req: Request) {
     const client = new OpenAI({ apiKey });
 
     const body = await req.json();
+    console.log("judge body:", body);
     const inputText = String(body.inputText ?? "").trim();
     const imageDataUrl =
       typeof body.imageDataUrl === "string" && body.imageDataUrl.length > 0
