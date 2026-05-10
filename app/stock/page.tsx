@@ -29,6 +29,7 @@ export default function StockPage() {
     formData.append("spec", spec);
     formData.append("quantity", quantity);
     formData.append("deadline", deadline);
+    formData.append("comment", comment);
 
     if (photo) {
       formData.append("photo", photo);
@@ -43,6 +44,13 @@ export default function StockPage() {
 
     if (data.success) {
       alert("登録できました");
+      setMaterial("");
+      setSpec("");
+      setQuantity("");
+      setComment("");
+      setDeadline("");
+      setPhoto(null);
+      setPhotoPreview("");
     } else {
       alert(data.error || data.message || "登録失敗");
     }
