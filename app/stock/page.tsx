@@ -141,26 +141,32 @@ export default function StockPage() {
               近くの余り材を検索してください。
             </p>
 
-            {stocks.map((x, i) => (
-              <div
-                key={i}
-                style={{
-                  border: "1px solid #ddd",
-                  borderRadius: 12,
-                  padding: 16,
-                  marginBottom: 12,
-                }}
-              >
-                <div style={{ fontWeight: "bold", fontSize: 18 }}>
-                  {x.material}
-                </div>
+            {stocks
+              .filter((x) =>
+                `${x.material} ${x.spec} ${x.address} ${x.comment}`
+                  .toLowerCase()
+                  .includes(search.toLowerCase())
+              )
+              .map((x, i) => (
+                <div
+                  key={i}
+                  style={{
+                    border: "1px solid #ddd",
+                    borderRadius: 12,
+                    padding: 16,
+                    marginBottom: 12,
+                  }}
+                >
+                  <div style={{ fontWeight: "bold", fontSize: 18 }}>
+                    {x.material}
+                  </div>
 
-                <div>規格：{x.spec}</div>
-                <div>数量：{x.quantity}</div>
-                <div>住所：{x.address}</div>
-                <div>コメント：{x.comment}</div>
-              </div>
-            ))}
+                  <div>規格：{x.spec}</div>
+                  <div>数量：{x.quantity}</div>
+                  <div>住所：{x.address}</div>
+                  <div>コメント：{x.comment}</div>
+                </div>
+              ))}
           </div>
         </>
       )}
