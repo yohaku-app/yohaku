@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 export default function StockPage() {
   const [search, setSearch] = useState("");
@@ -14,12 +14,11 @@ export default function StockPage() {
   const [spec, setSpec] = useState("");
   const [quantity, setQuantity] = useState("");
   const [deadline, setDeadline] = useState("");
-  const [photo, setPhoto] = useState<File | null>(null)
-  const [photoPreview, setPhotoPreview] = useState("")
+  const [photo, setPhoto] = useState<File | null>(null);
+  const [photoPreview, setPhotoPreview] = useState("");
   const [mode, setMode] = useState("search");
-  const [comment, setComment] = useState("")
-
-
+  const [comment, setComment] = useState("");
+  const [stocks, setStocks] = useState<any[]>([]);
 
   const handleRegister = async () => {
     const formData = new FormData();
@@ -44,6 +43,7 @@ export default function StockPage() {
 
     if (data.success) {
       alert("登録できました");
+
       setMaterial("");
       setSpec("");
       setQuantity("");
@@ -56,14 +56,32 @@ export default function StockPage() {
     }
   };
 
+  const fetchStocks = async () => {
+    const res = await fetch("/api/get-stock");
+    const data = await res.json();
 
+    if (data.stocks) {
+      setStocks(data.stocks);
+    }
+  };
 
+  useEffect(() => {
+    fetchStocks();
+  }, []);
 
   return (
     <main style={{ padding: 24, paddingBottom: 100 }}>
-      <h1 style={{ fontSize: 34, marginBottom: 8 }}>近くの余り材</h1>
+      <h1 style={{ fontSize: 34, marginBottom: 8 }}>
+        近くの余り材
+      </h1>
 
-      <p style={{ fontSize: 17, color: "#555", marginBottom: 20 }}>
+      <p
+        style={{
+          fontSize: 17,
+          color: "#555",
+          marginBottom: 20,
+        }}
+      >
         余った材料を、近くの現場同士で活用できます。
       </p>
 
@@ -117,70 +135,119 @@ export default function StockPage() {
               marginBottom: 20,
             }}
           />
+
+          <div style={{ display: "grid", gap: 16 }}>
+            <p style={{ color: "#666", fontSize: 16 }}>
+              近くの余り材を検索してください。
+            </p>
+
+            {stocks.map((x, i) => (
+              <div
+                key={i}
+                style={{
+                  border: "1px solid #ddd",
+                  borderRadius: 12,
+                  padding: 16,
+                  marginBottom: 12,
+                }}
+              >
+                <div style={{ fontWeight: "bold", fontSize: 18 }}>
+                  {x.material}
+                </div>
+
+                <div>規格：{x.spec}</div>
+                <div>数量：{x.quantity}</div>
+                <div>住所：{x.address}</div>
+                <div>コメント：{x.comment}</div>
+              </div>
+            ))}
+          </div>
         </>
       )}
 
-
       {mode === "register" && (
         <>
-
-          <div style={{ marginTop: "24px", padding: "16px", border: "1px solid #ddd", borderRadius: "12px" }}>
+          <div
+            style={{
+              marginTop: "24px",
+              padding: "16px",
+              border: "1px solid #ddd",
+              borderRadius: "12px",
+            }}
+          >
             <h2>余り材登録</h2>
 
             <label style={{ fontWeight: "bold" }}>住所</label>
             <input
               value={address}
               onChange={(e) => setAddress(e.target.value)}
-              style={{ width: "100%", marginBottom: "12px", padding: "8px" }}
+              style={{
+                width: "100%",
+                marginBottom: "12px",
+                padding: "8px",
+              }}
             />
 
             <label style={{ fontWeight: "bold" }}>材料名</label>
             <input
               value={material}
               onChange={(e) => setMaterial(e.target.value)}
-              style={{ width: "100%", marginBottom: "12px", padding: "8px" }}
+              style={{
+                width: "100%",
+                marginBottom: "12px",
+                padding: "8px",
+              }}
             />
-
-
 
             <label style={{ fontWeight: "bold" }}>数量</label>
             <input
               type="number"
               value={quantity}
               onChange={(e) => setQuantity(e.target.value)}
-              style={{ width: "100%", marginBottom: "12px", padding: "8px" }}
-
-
-
+              style={{
+                width: "100%",
+                marginBottom: "12px",
+                padding: "8px",
+              }}
             />
 
+            <label style={{ fontWeight: "bold" }}>
+              コメント（自由）
+            </label>
 
-
-            <label style={{ fontWeight: "bold" }}>コメント（自由）</label>
             <input
               placeholder="例：30mmです、未使用、屋内保管"
               value={comment}
               onChange={(e) => setComment(e.target.value)}
-              style={{ width: "100%", marginBottom: "12px", padding: "8px" }}
+              style={{
+                width: "100%",
+                marginBottom: "12px",
+                padding: "8px",
+              }}
             />
 
-            <label style={{ fontWeight: "bold" }}>写真（任意）</label>
+            <label style={{ fontWeight: "bold" }}>
+              写真（任意）
+            </label>
 
             <input
               type="file"
               accept="image/*"
               onChange={(e) => {
-                const file = e.target.files?.[0] || null
-                setPhoto(file)
+                const file = e.target.files?.[0] || null;
+
+                setPhoto(file);
 
                 if (file) {
-                  setPhotoPreview(URL.createObjectURL(file))
+                  setPhotoPreview(
+                    URL.createObjectURL(file)
+                  );
                 }
               }}
               style={{
                 width: "100%",
                 marginBottom: "12px",
-                padding: "8px"
+                padding: "8px",
               }}
             />
 
@@ -192,17 +259,24 @@ export default function StockPage() {
                   width: "100%",
                   maxWidth: "300px",
                   marginBottom: "12px",
-                  borderRadius: "8px"
+                  borderRadius: "8px",
                 }}
               />
             )}
 
-            <label style={{ fontWeight: "bold" }}>引取期限</label>
+            <label style={{ fontWeight: "bold" }}>
+              引取期限
+            </label>
+
             <input
               type="date"
               value={deadline}
               onChange={(e) => setDeadline(e.target.value)}
-              style={{ width: "100%", marginBottom: "12px", padding: "8px" }}
+              style={{
+                width: "100%",
+                marginBottom: "12px",
+                padding: "8px",
+              }}
             />
 
             <button
@@ -217,27 +291,14 @@ export default function StockPage() {
                 border: "none",
                 borderRadius: 10,
                 marginTop: 12,
-                cursor: "pointer"
+                cursor: "pointer",
               }}
             >
               登録する
             </button>
           </div>
-
         </>
       )}
-
-      {mode === "search" && (
-        <div style={{ display: "grid", gap: 16 }}>
-          <p style={{ color: "#666", fontSize: 16 }}>
-            近くの余り材を検索してください。
-          </p>
-
-          <p style={{ color: "#999", fontSize: 14 }}>
-            現在登録された材料はまだありません。
-          </p>
-        </div>
-      )}
-    </main >
+    </main>
   );
 }

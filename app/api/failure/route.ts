@@ -141,7 +141,13 @@ export async function POST(req: Request) {
                     ],
                 },
 
-                
+                作成日時: {
+                    date: {
+                        start: new Date().toISOString(),
+                    },
+                },
+
+
             }
         });
 
