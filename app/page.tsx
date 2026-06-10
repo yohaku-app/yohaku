@@ -34,8 +34,9 @@ export default function Home() {
     "段取りは見えない技術だ",
   ];
 
-  const randomMessage =
-    messages[Math.floor(Math.random() * messages.length)];
+  const [randomMessage] = useState(
+    messages[Math.floor(Math.random() * messages.length)]
+  );
   const [inputText, setInputText] = useState("");
   const [imageDataUrl, setImageDataUrl] = useState<string | null>(null);
   const [imageName, setImageName] = useState<string>("");
