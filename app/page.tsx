@@ -29,6 +29,13 @@ type Result = {
 export default function Home() {
 
 
+  const messages = [
+    "涼しい顔で現場を回る",
+    "段取りは見えない技術だ",
+  ];
+
+  const randomMessage =
+    messages[Math.floor(Math.random() * messages.length)];
   const [inputText, setInputText] = useState("");
   const [imageDataUrl, setImageDataUrl] = useState<string | null>(null);
   const [imageName, setImageName] = useState<string>("");
@@ -155,14 +162,16 @@ export default function Home() {
           transition: "opacity 1s ease",
         }}
       >
-        <p style={{
-          textAlign: "center",
-          lineHeight: 1.8,
-          padding: "0 20px",
-          fontFamily: "'Noto Sans JP', sans-serif",
-          fontWeight: 500
-        }}>
-          先人の失敗から学ぶ
+        <p
+          style={{
+            textAlign: "center",
+            lineHeight: 1.8,
+            padding: "0 20px",
+            fontFamily: "'Noto Sans JP', sans-serif",
+            fontWeight: 500
+          }}
+        >
+          {randomMessage}
         </p>
       </div>
     );
